@@ -24,7 +24,8 @@ class HomeBaseController extends BaseController
         parent::_initialize();
         $siteInfo = cmf_get_site_info();
         View::share('site_info', $siteInfo);
-        if(!empty(session('user.id'))) {
+        $uid = session('user.id')?session('user.id'):null;
+        if(!empty($uid)) {
             $id = session('user.id');
             $userInfo = Db::name('user')->find($id);
 
