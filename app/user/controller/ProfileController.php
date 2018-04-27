@@ -41,6 +41,21 @@ class ProfileController extends UserBaseController
         return $this->fetch();
     }
 
+    /*
+     * 分享二维码
+     */
+    public function share(){
+        $uid = session('user.id');
+        $url = "http://www.qianduoya.com/user/wx/auth/pid/".$uid;
+        $qrCode = './upload/qrcode/qrlogo'.$uid.'.png';
+        if (!file_exists($qrCode)) {
+            crQrcode($url,$uid);
+        }
+        $imgUrl = '/upload/qrcode/qrlogo'.$uid.'.png';
+        $this->assign('img_url',$imgUrl);
+        return $this->fetch();
+    }
+
     /**
      * 编辑用户资料
      */

@@ -10,11 +10,27 @@
 // +----------------------------------------------------------------------
 namespace app\admin\model;
 
+use think\Db;
 use think\Model;
 
 class UserModel extends Model
 {
 
 
-
+    public static function getChildIds($id){
+        $childIds = [];
+        $childList = Db::name('user')->where(['pid'=>$id])->select();
+        if(count($childList) > 0){
+            foreach ($childList as $v){
+                $childIds[] = $v['id'];
+            }
+            $childChildList = Db::name('user')->where(['pid'=>['in',$childIds]])->select();
+            if(count($childChildList) > 0){
+                foreach ($childChildList as $cv){
+                    $childIds[] = $cv['id'];
+                }
+            }
+        }
+        return $childIds;
+    }
 }

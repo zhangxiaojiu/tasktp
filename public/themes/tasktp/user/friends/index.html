@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>{$user_info.user_nickname}  - 我的好友</title>
+<meta name="keywords" content=""/>
+<meta name="description" content="">
+<include file="public@head"/>
+</head>
+<body>
+<!-- top bar -->
+<div class="top-bar pr30"><a href="{:url('profile/center')}"><span class="glyphicon glyphicon-menu-left fl"></span></a>我的好友</div>
+<div class="mt50"></div>
+<div class="carpet ">
+	<div class="tab-content">
+		<div class="tab-pane active" id="one">
+			<br>
+			<table class="table table-bordered table-striped table-hover">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>昵称</th>
+						<th>头像</th>
+					</tr>
+				</thead>
+				<tbody>
+					<foreach name="list" item="vo">
+					<tr>
+						<td>{$vo.id}</td>
+						<td>{$vo.user_nickname}</td>
+						<td><img style="height:50px;" src="{$vo.avatar}"/></td>
+					</tr>
+					</foreach>
+				</tbody>
+			</table>
+			<div class="pagination">{$list->render()|default=''}</div>
+		</div>
+	</div>
+</div>
+<include file="public@footer" />
+<!-- /container -->
+<include file="public@scripts" />
+</body>
+</html>
