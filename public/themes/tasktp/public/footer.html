@@ -1,0 +1,34 @@
+<br>
+<!-- Footer ================================================== -->
+<hr>
+<div id="footer">
+    <hook name="footer_start"/>
+    <div class="mb60"></div>
+    <nav class="navbar navbar-default navbar-fixed-bottom">
+        <div class="container b-c-pink">
+            <div class="">
+                <a class="col-xs-4 navbar-brand" href="/">
+                    <span class="glyphicon glyphicon-home" aria-hidden="true"></span>首页
+                </a>
+                <a class="col-xs-4 navbar-brand user-center" href="{:url('user/profile/center')}">
+                    <empty name="user_info.avatar">
+                        <img style="" src="__TMPL__/../public/img/logo.png"
+                             class="img-responsive"
+                             alt="">
+                        <else/>
+                        <img src="{$user_info.avatar}"
+                             class="img-responsive resImg"
+                             alt="">
+                    </empty>
+                    {$user_info.user_nickname}
+                </a>
+                <a class="col-xs-4 navbar-brand" href="{:url('portal/list/index')}">
+                    <span class="glyphicon glyphicon-th" aria-hidden="true"></span>列表
+                </a>
+            </div>
+        </div>
+    </nav>
+</div>
+<!--<div id="backtotop">-->
+    <!--<i class="fa fa-arrow-circle-up"></i>-->
+<!--</div>-->
