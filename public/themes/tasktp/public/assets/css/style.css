@@ -12,11 +12,26 @@ body.body-white {
 .color-red{color:orangered;}
 .color-gold{color:gold;}
 .color-blue{color:#00afec;}
+.mt50{margin-top:50px;}
 .mb60{margin-bottom:60px;}
 .pr30{padding-right:30px;}
 .pt20{padding-top:20px;}
 .fs18{font-size:18px;}
 .w100{width:100%;}
+/*地毯*/
+.carpet{background:#fff; width:98%; border-radius:5px; border:1px solid #ddd; margin:10px auto; padding:10px; box-shadow: 0 1px 1px rgba(0,0,0,.05);}
+/*地毯毛*/
+.carpet .tac{text-align: center;}
+.carpet .view-money{color:#00afec;font-weight:bold;}
+.carpet .top-line{border-top:1px solid #ddd;}
+.carpet .right-line{border-right:1px solid #ddd; padding-right:10px;}
+.carpet .one-from-two{width:49%; display:inline-block; padding:10px 0px; font-size:18px;}
+.carpet .one-from-three{width:32.5%; display:inline-block; padding:10px 0px; font-size:18px;}
+.carpet .icon-money{color: gold; border:1px solid; margin-right:10px; padding:2px;}
+.carpet .icon-time{color: #00afec; border:1px solid; margin-right:10px; padding:2px;}
+.carpet .icon-inm{color: #00afec; border:1px solid; margin-right:10px; padding:5px;}
+.carpet .gray-text{color:gray; font-size:14px;}
+.carpet .one-from-two div{margin:10px auto;}
 /*底部导航*/
 .navbar-default .navbar-brand{color:#00afec; text-align:center;}
 .navbar-default .container{width:100%;}
@@ -37,6 +52,11 @@ body.body-white {
     opacity: 0.5;
     color: #fff;
 }
+/*个人中心*/
+.user-top{background: #f02390; height:180px; text-align: center;color:#fff; margin-bottom:20px;}
+.user-top img{width:20%; margin:15px auto; border-radius: 50%; background: #fff;}
+.top-bar{background: #f02390; line-height:50px; height:50px; color:#fff; font-size: 20px; text-align: center; width:100%; position:fixed; top:0px;}
+.top-bar a span{font-size:25px; line-height: 50px; color:#fff;}
 
 .navbar-fixed-top, .navbar-fixed-bottom {
     position: fixed;

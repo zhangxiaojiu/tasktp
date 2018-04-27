@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>{$user_login}  - 我的收藏</title>
+<title>{$user_info.user_nickname}  - 我的任务</title>
 <meta name="keywords" content=""/>
 <meta name="description" content="">
 <include file="public@head"/>
 </head>
 <body>
 <!-- top bar -->
-<div class="top-bar pr30"><a href="{:url('profile/center')}"><span class="glyphicon glyphicon-menu-left fl"></span></a>我的收藏</div>
+<div class="top-bar pr30"><a href="{:url('profile/center')}"><span class="glyphicon glyphicon-menu-left fl"></span></a>我的任务</div>
 <div class="mt50"></div>
 <div class="carpet ">
 	<div class="tab-content">
@@ -19,28 +19,32 @@
 					<tr>
 						<th>#</th>
 						<th>标题</th>
-						<th>描述</th>
+						<th>状态</th>
 						<th>操作</th>
 					</tr>
 				</thead>
+				<php>
+					$arr_join_status = [
+						0=>"已参加",
+						1=>"已提交",
+						2=>"已合格",
+						3=>"已驳回",
+					];
+				</php>
 				<tbody>
-					<foreach name="lists" item="vo">
+					<foreach name="list" item="vo">
 					<tr>
 						<td>{$vo.id}</td>
-						<td>{$vo.title}</td>
-						<td>{$vo.description}</td>
+						<td>{$vo.post_title}</td>
+						<td>{$arr_join_status[$vo.join_status]}</td>
 						<td>
-							<php>
-								$url = json_decode($vo['url'],true);
-							</php>
-							<a href="{:cmf_url($url['action'],$url['param'])}">查看</a> |
-							<a class="js-ajax-dialog-btn" href="{:url('user/favorite/delete',array('id'=>$vo['id']))}" data-msg="您确定要取消收藏吗？" data-ok="" data-cacel="取消">取消收藏</a>
+							<a href="{:url('portal/article/index',array('id'=>$vo.post_id))}">查看</a>
 						</td>
 					</tr>
 					</foreach>
 				</tbody>
 			</table>
-			<div class="pagination">{$page|default=''}</div>
+			<div class="pagination">{$list->render()|default=''}</div>
 		</div>
 	</div>
 </div>

@@ -1358,11 +1358,21 @@ div.edui-box {
     *height: 570px;
 }
 
-/*image-dialog*/
-.edui-default .edui-for-insertimage .edui-dialog-content {
-    width: 650px;
-    height: 400px;
-    overflow: hidden;
+@media screen and (min-width: 660px) {
+    /*image-dialog*/
+    .edui-default .edui-for-insertimage .edui-dialog-content {
+        width: 650px;
+        height: 400px;
+        overflow: hidden;
+    }
+}
+@media screen and (max-width: 650px) {
+    /*image-dialog*/
+    .edui-default .edui-for-insertimage .edui-dialog-content {
+        width: 372px;
+        height: 400px;
+        overflow: hidden;
+    }
 }
 /*webapp-dialog*/
 .edui-default .edui-for-webapp .edui-dialog-content {

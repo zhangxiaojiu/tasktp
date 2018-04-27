@@ -65,13 +65,17 @@ class JoinPostService
             $where['pp.post_title'] = ['like', "%$keyword%"];
         }
 
+        $uid = empty($filter['uid']) ? '' : $filter['uid'];
+        if (!empty($uid)) {
+            $where['j.user_id'] = $uid;
+        }
 
 
         $joinPostModel = new PortalJoinPostModel();
         $ret        = $joinPostModel->alias('j')->field($field)
             ->join($join)
             ->where($where)
-            ->order('update_time', 'DESC')
+            ->order('update_time DESC', 'create_time DESC')
             ->paginate(10);
 
         return $ret;

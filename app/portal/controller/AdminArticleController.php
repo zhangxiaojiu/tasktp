@@ -82,6 +82,7 @@ class AdminArticleController extends AdminBaseController
                 'coin' => $jpInfo['post_money'],
                 'type' => 'task',
                 'detail' => '完成任务《'.$jpInfo['post_title'].'》奖励¥'.$jpInfo['post_money'],
+                'status' => 1
             ];
             if(!CoinLogService::addCoinLog($clData)){
                 Db::rollback();

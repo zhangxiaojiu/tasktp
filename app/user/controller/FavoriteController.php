@@ -10,6 +10,7 @@
 // +----------------------------------------------------------------------
 namespace app\user\controller;
 
+use app\portal\service\JoinPostService;
 use cmf\controller\UserBaseController;
 use app\user\model\UserFavoriteModel;
 use think\Db;
@@ -28,6 +29,16 @@ class FavoriteController extends UserBaseController
         $this->assign($user);
         $this->assign("page", $data['page']);
         $this->assign("lists", $data['lists']);
+        return $this->fetch();
+    }
+
+    /*
+     * 个人中心我的任务列表
+     */
+    public function task(){
+        $uid = session('user.id');
+        $list = JoinPostService::JoinPostList(['uid'=>$uid]);
+        $this->assign('list',$list);
         return $this->fetch();
     }
 
