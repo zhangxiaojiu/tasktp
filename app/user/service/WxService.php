@@ -94,7 +94,7 @@ class WxService
         $token = $accessToken['access_token'];
         $url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=".$token;
         $ret = request_post($url,urldecode($params));
-        return json_decode($ret,true);
+        return $ret;
     }
     //模版 账户变更
     public static function tmpAccountChange($openId,$type,$account,$remark){

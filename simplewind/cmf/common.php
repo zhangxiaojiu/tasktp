@@ -1877,7 +1877,7 @@ function request_post($url = '', $param = '')
     curl_setopt($ch, CURLOPT_POSTFIELDS, $curlPost);
     $data = curl_exec($ch); //运行curl
     curl_close($ch);
-    return $data;
+    return json_decode($data,true);
 }
 /**
  * 发送get请求
@@ -1894,7 +1894,7 @@ function request_get($url = '')
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     $data = curl_exec($ch);
     curl_close($ch);
-    return $data;
+    return json_decode($data,true);
 }
 
 /*

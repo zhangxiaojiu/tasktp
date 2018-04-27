@@ -38,14 +38,13 @@ class WxController extends HomeBaseController
     public function auth()
     {
         $code = isset($_GET['code'])?$_GET['code']:false;
-        $state = isset($_GET['state'])?$_GET['state']:1;//传递参数用
+        $state = isset($_GET['state'])?$_GET['state']:0;//传递参数用
         if($code) {
             $ret = WxService::getAccessToken($code);
             if (isset($ret['errcode'])) {
                 p($ret, 0);
             } else {
                 $data['access_token'] = $ret['access_token'];
-                $data['refresh_token'] = $ret['refresh_token'];
                 $data['expire_time'] = time() + $ret['expires_in'];
 
                 $userRet = WxService::getUserInfo($data['access_token'],$ret['openid']);
@@ -87,8 +86,8 @@ class WxController extends HomeBaseController
                 $this->redirect('/');
             }
         }else{
-            $redirect_uri= url('wx/auth');
-            $pid = isset($_GET['pid'])?$_GET['pid']:1;
+            $redirect_uri = "http://www.qianduoya.com/user/wx/auth";
+            $pid = isset($_GET['pid'])?$_GET['pid']:0;
             $url = WxService::getAuthUrl($redirect_uri,$pid);
             $this->redirect($url);
         }

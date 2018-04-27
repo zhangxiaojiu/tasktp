@@ -64,8 +64,9 @@ class ArticleController extends HomeBaseController
         hook('portal_before_assign_article', $article);
 
         $joinPost = [];
-        if(!empty(session('user.id'))){
-            $joinPost = Db::name('portal_join_post')->where(['user_id'=>session('user.id'),'post_id'=>$articleId])->find();
+        $uid = session('user.id')?session('user.id'):null;
+        if(!empty($uid)){
+            $joinPost = Db::name('portal_join_post')->where(['user_id'=>$uid,'post_id'=>$articleId])->find();
         }
         $this->assign('join_post',$joinPost);
         $this->assign('article', $article);

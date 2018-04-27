@@ -203,9 +203,9 @@ class HomeBaseController extends BaseController
         $userId = cmf_get_current_user_id();
         if (empty($userId)) {
             if ($this->request->isAjax()) {
-                $this->error("您尚未登录", cmf_url("user/Login/index"));
+                $this->error("您尚未登录", cmf_url("user/wx/auth"));
             } else {
-                $this->redirect(cmf_url("user/Login/index"));
+                $this->redirect(cmf_url("user/wx/auth"));
             }
         }
     }
