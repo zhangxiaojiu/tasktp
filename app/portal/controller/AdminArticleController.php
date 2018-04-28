@@ -76,6 +76,7 @@ class AdminArticleController extends AdminBaseController
         $id = $this->request->param('id',0);
         Db::startTrans();
         if(JoinPostService::setJoinStatus($id,2,'published_time')){
+
             $jpInfo = JoinPostService::JoinPostInfo($id);
             $clData = [
                 'uid' => $jpInfo['user_id'],
@@ -84,9 +85,12 @@ class AdminArticleController extends AdminBaseController
                 'detail' => '完成任务《'.$jpInfo['post_title'].'》奖励¥'.$jpInfo['post_money'],
                 'status' => 1
             ];
-            if(!CoinLogService::addCoinLog($clData)){
+            if(!CoinLogService::addCoinLog($clData,'coin')){
                 Db::rollback();
             }
+            //奖励上级
+            CoinLogService::taskUserParents($jpInfo['user_id'],$jpInfo['post_money']);
+
             Db::commit();
             $this->success('通过成功');
         }

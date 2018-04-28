@@ -53,6 +53,7 @@ class SettingController extends AdminBaseController
         $cdnSettings    = cmf_get_option('cdn_settings');
         $cmfSettings    = cmf_get_option('cmf_settings');
         $adminSettings  = cmf_get_option('admin_settings');
+        $taskSettings  = cmf_get_option('task_settings');
 
         $this->assign(cmf_get_option('site_info'));
         $this->assign("admin_styles", $adminStyles);
@@ -60,6 +61,7 @@ class SettingController extends AdminBaseController
         $this->assign("cdn_settings", $cdnSettings);
         $this->assign("admin_settings", $adminSettings);
         $this->assign("cmf_settings", $cmfSettings);
+        $this->assign("task_settings", $taskSettings);
 
         return $this->fetch();
     }
@@ -87,6 +89,9 @@ class SettingController extends AdminBaseController
 
             $options = $this->request->param('options/a');
             cmf_set_option('site_info', $options);
+
+            $tasks = $this->request->param('task/a');
+            cmf_set_option('task_settings', $tasks);
 
             $cmfSettings = $this->request->param('cmf_settings/a');
 

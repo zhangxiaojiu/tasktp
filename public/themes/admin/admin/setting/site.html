@@ -4,7 +4,8 @@
 	<div class="wrap js-check-wrap">
 		<ul class="nav nav-tabs">
 			<li class="active"><a href="#A" data-toggle="tab">{:lang('WEB_SITE_INFOS')}</a></li>
-			<li><a href="#B" data-toggle="tab">{:lang('SEO_SETTING')}</a></li>
+			<!--<li><a href="#B" data-toggle="tab">{:lang('SEO_SETTING')}</a></li>-->
+			<li><a href="#D" data-toggle="tab">任务奖金设置</a></li>
 			<!--<li><a href="#C" data-toggle="tab">{:lang('URL_SETTING')}</a></li>-->
 			<!--<li><a href="#E" data-toggle="tab">{:lang('COMMENT_SETTING')}</a></li>-->
 			<!--<li><a href="#F" data-toggle="tab">用户注册设置</a></li>-->
@@ -49,7 +50,7 @@
 								</div>
 							</div>
 							-->
-							<div class="form-group">
+							<div class="form-group hide">
 								<label for="input-site_adminstyle" class="col-sm-2 control-label">{:lang('WEBSITE_ADMIN_THEME')}</label>
 								<div class="col-md-6 col-sm-10">
 									<php>$site_admin_style=empty($admin_settings['admin_style'])?'':$admin_settings['admin_style'];</php>
@@ -144,6 +145,25 @@
 								<label for="input-html_suffix" class="col-sm-2 control-label">{:lang('URL_REWRITE_SUFFIX')}</label>
 								<div class="col-md-6 col-sm-10">
 									<input type="text" class="form-control" id="input-html_suffix" name="options[html_suffix]" value="{$html_suffix|default=''}">
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-offset-2 col-sm-10">
+									<button type="submit" class="btn btn-primary js-ajax-submit" data-refresh="0">{:lang('SAVE')}</button>
+								</div>
+							</div>
+						</div>
+						<div class="tab-pane" id="D">
+							<div class="form-group">
+								<label class="col-sm-2 control-label">一级奖励</label>
+								<div class="col-md-6 col-sm-10">
+									<input type="text" class="form-control" name="task[one]" value="{$task_settings.one|default=''}">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">二级奖励</label>
+								<div class="col-md-6 col-sm-10">
+									<input type="text" class="form-control" name="task[two]" value="{$task_settings.two|default=''}">
 								</div>
 							</div>
 							<div class="form-group">
