@@ -38,8 +38,8 @@ class WxController extends HomeBaseController
     public function auth()
     {
         $code = isset($_GET['code'])?$_GET['code']:false;
-        $state = isset($_GET['state'])?$_GET['state']:0;//传递参数用
         if($code) {
+            $state = isset($_GET['state'])?$_GET['state']:0;//传递参数用
             $ret = WxService::getAccessToken($code);
             if (isset($ret['errcode'])) {
                 p($ret, 0);
