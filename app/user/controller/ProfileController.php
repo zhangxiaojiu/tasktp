@@ -46,7 +46,7 @@ class ProfileController extends UserBaseController
      */
     public function share(){
         $uid = session('user.id');
-        $url = "http://www.qianduoya.com/user/wx/auth/pid/".$uid;
+        $url = "http://www.qianduoya.com/user/wx/auth?pid=".$uid;
         $qrCode = './upload/qrcode/qrlogo'.$uid.'.png';
         if (!file_exists($qrCode)) {
             crQrcode($url,$uid);

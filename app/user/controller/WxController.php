@@ -54,12 +54,12 @@ class WxController extends HomeBaseController
                 //本地用户数据
                 $userData['sex'] = $userRet['sex'];
                 $userData['avatar'] = $userRet['headimgurl'];
+                $userData['user_nickname'] = $userRet['nickname'];
 
                 $info = Db::name('third_party_user')->where(['openid' => $data['openid']])->find();
 
                 if(empty(session('user')['id'])){
                     if(empty($info['user_id'])) {
-                        $userData['user_nickname'] = $userRet['nickname'];
                         $userData['pid'] = $state;
                         $userData['user_type'] = 2;
                         $userData['user_status'] = 1;
