@@ -134,7 +134,7 @@ class WxService
     }
 
     //现金红包
-    public static function cashRedBag($openId,$totalFee,$sendName,$outTradeNo,$wishing,$actName){
+    public static function cashRedBag($openId,$nickName,$totalFee,$sendName,$outTradeNo,$wishing,$actName){
         $url = "https://api.mch.weixin.qq.com/mmpaymkttransfers/sendredpack";
         $config = self::getConfig();
         $unified = array(
@@ -142,6 +142,7 @@ class WxService
             'send_name' => $sendName,
             'mch_id' => $config['mch_id'],
             'nonce_str' => create_nonce_str(),
+            'nick_name' => $nickName,
             're_openid' => $openId,
             'mch_billno' => $outTradeNo,
             'client_ip' => '127.0.0.1',

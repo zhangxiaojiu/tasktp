@@ -42,6 +42,7 @@ class CoinLogController extends UserBaseController
         $wxInfo = Db::name('third_party_user')->where(['user_id'=>$uid])->find();
         if($wxInfo['openid']){
             $openId = $wxInfo['openid'];
+            $nickName = $wxInfo['nickname'];
         }else{
             $this->error('未绑定微信');
         }
@@ -49,7 +50,7 @@ class CoinLogController extends UserBaseController
         $outTradeNo = "QDY".$uid.'OT'.date("YmdHis",time()).mt_rand(100,999);
         $wishing = "欢迎参与活动，请领取红包";
         $actName = "挑战任务赢取现金红包";
-        $ret = WxService::cashRedBag($openId,'1',$sendName,$outTradeNo,$wishing,$actName);
+        $ret = WxService::cashRedBag($openId,$nickName,'1',$sendName,$outTradeNo,$wishing,$actName);
         p($ret,0);
         if($ret){
             $this->success('提现成功');
