@@ -18,6 +18,8 @@ class WxService
             'app_secret' => 'cda06aca6c9663073c18f5ae630fb426',
             'token' => 'qianduoyatk',
             'aes_key' => 'IjmXovllF1DutNcyT3qWdI8AyaKFkn7syU22QU5s6bl',
+            'mch_id' => '1360471002',
+            'key' => 'ceV0nixHOpO2hkVSU7HjvFFiLBYpcwHD',
         ];
     }
     //获取签名
@@ -129,5 +131,64 @@ class WxService
         $json = json_encode($params);
         $ret = WxService::sendTmpMess($json);
         return $ret;
+    }
+
+    //现金红包
+    public static function cashRedBag($openId,$totalFee,$sendName,$outTradeNo,$wishing,$actName){
+        $url = "https://api.mch.weixin.qq.com/mmpaymkttransfers/sendredpack";
+        $config = self::getConfig();
+        $unified = array(
+            'wxappid' => $config['app_id'],
+            'send_name' => $sendName,
+            'mch_id' => $config['mch_id'],
+            'nonce_str' => create_nonce_str(),
+            're_openid' => $openId,
+            'mch_billno' => $outTradeNo,
+            'client_ip' => '127.0.0.1',
+            'total_amount' => intval($totalFee * 100),       //单位 转为分
+            'total_num'=>1,                 //红包发放总人数
+            'wishing'=>$wishing,            //红包祝福语
+            'act_name'=>$actName,           //活动名称
+            'remark'=>'remark',            //备注信息，如为中文注意转为UTF8编码
+            //'scene_id'=>'PRODUCT_2',      //发放红包使用场景，红包金额大于200时必传。https://pay.weixin.qq.com/wiki/doc/api/tools/cash_coupon.php?chapter=13_4&index=3
+        );
+        $unified['sign'] = self::getPaySign($unified, $config['key']);
+        $responseXml = curlPost($url, arrayToXml($unified));
+        $unifiedOrder = simplexml_load_string($responseXml, 'SimpleXMLElement', LIBXML_NOCDATA);
+        if ($unifiedOrder === false) {
+            return 'parse xml error';
+        }
+        if ($unifiedOrder->return_code != 'SUCCESS') {
+            return $unifiedOrder->return_msg;
+        }
+        if ($unifiedOrder->result_code != 'SUCCESS') {
+            return $unifiedOrder->err_code;
+        }
+        return true;
+    }
+    public static function getPaySign($params, $key)
+    {
+        ksort($params, SORT_STRING);
+        $unSignParaString = self::formatQueryParaMap($params, false);
+        $signStr = strtoupper(md5($unSignParaString . "&key=" . $key));
+        return $signStr;
+    }
+    protected static function formatQueryParaMap($paraMap, $urlEncode = false)
+    {
+        $buff = "";
+        ksort($paraMap);
+        foreach ($paraMap as $k => $v) {
+            if (null != $v && "null" != $v) {
+                if ($urlEncode) {
+                    $v = urlencode($v);
+                }
+                $buff .= $k . "=" . $v . "&";
+            }
+        }
+        $reqPar = '';
+        if (strlen($buff) > 0) {
+            $reqPar = substr($buff, 0, strlen($buff) - 1);
+        }
+        return $reqPar;
     }
 }

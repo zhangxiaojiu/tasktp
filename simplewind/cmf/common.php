@@ -1879,6 +1879,37 @@ function request_post($url = '', $param = '')
     curl_close($ch);
     return json_decode($data,true);
 }
+function curlPost($url = '', $postData = '', $options = array())
+{
+    if (is_array($postData)) {
+        $postData = http_build_query($postData);
+    }
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 30); //设置cURL允许执行的最长秒数
+    if (!empty($options)) {
+        curl_setopt_array($ch, $options);
+    }
+    //https请求 不验证证书和host
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+
+    //第一种方法，cert 与 key 分别属于两个.pem文件
+    //默认格式为PEM，可以注释
+    curl_setopt($ch,CURLOPT_SSLCERTTYPE,'PEM');
+    curl_setopt($ch,CURLOPT_SSLCERT,getcwd().'/cert/apiclient_cert.pem');
+    //默认格式为PEM，可以注释
+    curl_setopt($ch,CURLOPT_SSLKEYTYPE,'PEM');
+    curl_setopt($ch,CURLOPT_SSLKEY,getcwd().'/cert/apiclient_key.pem');
+    //第二种方式，两个文件合成一个.pem文件
+//        curl_setopt($ch,CURLOPT_SSLCERT,getcwd().'/all.pem');
+    $data = curl_exec($ch);
+    curl_close($ch);
+    return $data;
+}
 /**
  * 发送get请求
  * @param string $url
@@ -1948,4 +1979,26 @@ function crQrcode($url='',$uid){
     //输出图片
     imagepng($QR, './upload/qrcode/qrlogo'.$uid.'.png');
     imagedestroy($QR);
+}
+//生成随机字符串，默认32位
+function create_nonce_str($length=32) {
+    $chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    $str = "";
+    for($i=0;$i<$length;$i++) {
+        $str.=substr($chars, mt_rand(0,strlen($chars)-1),1);
+    }
+    return $str;
+}
+//数组转xml格式
+function arrayToXml($arr)
+{
+    $xml = "<xml>";
+    foreach ($arr as $key => $val) {
+        if (is_numeric($val)) {
+            $xml .= "<" . $key . ">" . $val . "</" . $key . ">";
+        } else
+            $xml .= "<" . $key . "><![CDATA[" . $val . "]]></" . $key . ">";
+    }
+    $xml .= "</xml>";
+    return $xml;
 }
