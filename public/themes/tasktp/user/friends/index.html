@@ -25,7 +25,7 @@
 				<tbody>
 					<foreach name="list" item="vo">
 					<tr>
-						<td>{$vo.id}</td>
+						<td><eq name="user_info.id" value="$vo.pid">二级<else/>三级</eq></td>
 						<td>{$vo.user_nickname}</td>
 						<td><img style="height:50px;" src="{$vo.avatar}"/></td>
 					</tr>

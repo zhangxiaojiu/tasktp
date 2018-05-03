@@ -14,6 +14,23 @@
         #article_content {
             word-wrap: break-word;
         }
+
+        #join_content{
+            width:100%;
+            border:2px solid #eee;
+            height:100px;
+        }
+        #add_img{
+            font-size:30px;
+            color:green;
+            float:right;
+            margin:0px 30px;
+        }
+        #remove_img{
+            font-size:30px;
+            color:red;
+            float:right;
+        }
     </style>
     <hook name="before_head_end"/>
 </head>
@@ -51,20 +68,29 @@
             </div>
 
             <div class="tc-box" id="post_join">
-                <form class="js-ajax-form" action="{:url('article/jointask',array('id'=>$article['id']))}" method="post">
+                <form class="js-ajax-form" action="{:url('article/jointask',array('id'=>$article['id']))}" method="post" enctype="multipart/form-data">
                 <empty name="join_post">
                     <button class="btn btn-lg btn-primary w100 js-ajax-submit" href="">立即参与</button>
                     <else/>
                     <!--提交任务-->
+                    <eq name="join_post.join_status" value="1"><h3>⌛️审核中</h3><hr/></eq>
                     <eq name="join_post.join_status" value="3"><h3>❌不合格</h3><hr/></eq>
                     <eq name="join_post.join_status" value="2">
                         <h3>✅合格</h3><hr/>
+                        <h4>提交内容：</h4>
                         <div>{$join_post.join_content|htmlspecialchars_decode}</div>
-                    </eq>
-                    <neq name="join_post.join_status" value="2">
-                        <script type="text/plain" id="join_content" name="join_content">{$join_post.join_content|htmlspecialchars_decode}</script>
+                    <else/>
+                        <h4>提交内容：</h4>
+                        <textarea id="join_content" name="join_content"></textarea>
+                        <h4>提交图片<span id="add_img">+</span>　　<span id="remove_img">-</span></h4>
+                        <div class="join-img-div">
+                            <input type="file" class="join_img" name="join_img[]">
+                        </div>
+                        <br/>
+                        <h4>现有内容：</h4>
+                        <div>{$join_post.join_content|htmlspecialchars_decode}</div>
                         <button class="btn btn-lg btn-primary w100 js-ajax-submit" href="">提交审核</button>
-                    </neq>
+                    </eq>
                 </empty>
                 </form>
             </div>
@@ -102,17 +128,12 @@
 </div>
 
 <include file="public@scripts"/>
-<script type="text/javascript" src="__STATIC__/js/ueditor/ueditor.config.js"></script>
-<script type="text/javascript" src="__STATIC__/js/ueditor/ueditor.all.min.js"></script>
 <script>
-    $(function () {
-        editorcontent = new baidu.editor.ui.Editor();
-        editorcontent.render('join_content');
-        try {
-            editorcontent.sync();
-        } catch (err) {
-            console.log(err);
-        }
+    $("#add_img").click(function () {
+        $(".join-img-div").append('<input type="file" class="join_img" name="join_img[]">')
+    });
+    $("#remove_img").click(function () {
+        $(".join_img").last().remove();
     });
 </script>
 <hook name="before_body_end"/>

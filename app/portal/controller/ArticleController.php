@@ -10,6 +10,7 @@
 // +----------------------------------------------------------------------
 namespace app\portal\controller;
 
+use app\portal\service\ImageService;
 use cmf\controller\HomeBaseController;
 use app\portal\model\PortalCategoryModel;
 use app\portal\service\PostService;
@@ -105,10 +106,22 @@ class ArticleController extends HomeBaseController
         $data['create_time'] = time();
         if(Db::name('portal_join_post')->where($where)->find()){
             $joinContent = $this->request->param('join_content', null);
+            $file   = $this->request->file('join_img');
+            if(count($file)>0) {
+                foreach ($file as $v) {
+                    $ret = self::uploadImg($v);
+                    if ($ret['code'] == 1) {
+                        $src = $ret['data']['file'];
+                        $joinContent .= '<img style="width:100%;" src="/upload/task/' . $src . '" />';
+                    } else {
+                        $this->error($ret['msg']);
+                    }
+                }
+            }
             if(empty($joinContent)) {
                 $this->error('已经参与，请补交材料');
             }else{
-                $joinData['join_content'] = $joinContent;
+                $joinData['join_content'] = htmlspecialchars($joinContent);
                 $joinData['join_status'] = 1;
                 $joinData['update_time'] = time();
                 Db::name('portal_join_post')->where($where)->update($joinData);
@@ -119,6 +132,45 @@ class ArticleController extends HomeBaseController
             $this->success('参与成功，请补交材料');
         }
 
+    }
+
+    /*
+     * 上传图片
+     */
+    private static function uploadImg($file){
+        $result = $file->validate([
+            'ext'  => 'jpg,jpeg,png',
+            'size' => 1024 * 1024*10
+        ])->move('.' . DS . 'upload' . DS . 'task' . DS);
+        if ($result) {
+            $saveName = str_replace('//', '/', str_replace('\\', '/', $result->getSaveName()));
+            //压缩图片
+            $scale = 0.2;
+            $fileInfo = $file->getInfo();
+            $size = $fileInfo['size'];
+            if($size < 200*1024){
+                $scale = 1;
+            }
+            $src = "./upload/task/".$saveName;
+            $image = new ImageService($src);
+            $image->percent = $scale;
+            $image->openImage();
+            $image->thumpImage();
+            $image->saveImage($src,true);
+            return [
+                'code' => 1,
+                "msg"  => "上传成功",
+                "data" => ['file' => $saveName],
+                "url"  => ''
+            ];
+        } else {
+            return [
+                'code' => 0,
+                "msg"  => $file->getError(),
+                "data" => "",
+                "url"  => ''
+            ];
+        }
     }
 
 }
