@@ -11,6 +11,7 @@
 
 namespace app\user\controller;
 
+use app\user\service\WxService;
 use cmf\controller\AdminBaseController;
 use think\Db;
 
@@ -128,6 +129,39 @@ class AdminIndexController extends AdminBaseController
             $this->success("会员启用成功！", '');
         } else {
             $this->error('数据传入失败！');
+        }
+    }
+
+    /*
+     * 提现审核
+     */
+    public function withdraw(){
+        $list = Db::name('coin_log')->alias('cl')->join('tt_user u','cl.uid = u.id')->field('cl.*,u.user_nickname')->where(['type'=>'withdraw'])->order('status')->paginate(10);
+        $this->assign('list',$list);
+        return $this->fetch();
+    }
+    /*
+     * 通过提现审核
+     */
+    public function passWithdraw(){
+        $id = input('param.id', 0, 'intval');
+        $clInfo = Db::name('coin_log')->find($id);
+        $wxInfo = Db::name('third_party_user')->where(['user_id'=>$clInfo['uid']])->find();
+        if($wxInfo['openid']){
+            $openId = $wxInfo['openid'];
+        }else{
+            $this->error('未绑定微信');
+        }
+        $outTradeNo = explode(',',$clInfo['detail'])[0];
+        $sendName = "钱多呀";
+        $wishing = "欢迎参与活动，请领取红包";
+        $actName = "挑战任务赢取现金红包";
+        $ret = WxService::cashRedBag($openId,'1',$sendName,$outTradeNo,$wishing,$actName);
+        if($ret === true){
+            Db::name('coin_log')->where(['id'=>$id])->setField('status',1);
+            $this->success('提现成功');
+        }else{
+            $this->error($ret[0]);
         }
     }
 }

@@ -1,0 +1,49 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a>提现审核</a></li>
+    </ul>
+
+    <form method="post" class="js-ajax-form">
+        <table class="table table-hover table-bordered">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>{:lang('USERNAME')}</th>
+                <th>金额</th>
+                <th>时间</th>
+                <th>{:lang('STATUS')}</th>
+                <th>{:lang('ACTIONS')}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <php>
+                $user_statuses=array("0"=>"待审核","1"=>"审核通过");
+            </php>
+            <foreach name="list" item="vo">
+                <tr>
+                    <td>{$vo.id}</td>
+                    <td>{$vo['user_nickname']?$vo['user_nickname']:lang('NOT_FILLED')}</td>
+                    <td>{$vo.coin}</td>
+                    <td>{:date('Y-m-d H:i:s',$vo['create_time'])}</td>
+                    <td>{$user_statuses[$vo['status']]}</td>
+                    <td>
+                        <neq name="vo.status" value="1">
+                                <a href="{:url('adminIndex/passWithdraw',array('id'=>$vo['id']))}" class="js-ajax-dialog-bt"
+                                   data-msg="通过后资金将发红包给用户">通过</a>
+                            <else/>
+                            <a style="color: #ccc;">已审核</a>
+                        </neq>
+                    </td>
+                </tr>
+            </foreach>
+            </tbody>
+        </table>
+        <div class="pagination">{$list->render()}</div>
+    </form>
+</div>
+<script src="__STATIC__/js/admin.js"></script>
+</body>
+</html>

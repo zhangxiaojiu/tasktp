@@ -11,7 +11,7 @@
 <div class="user-top">
     <h1 class="pt10">￥{$user_info.balance}</h1>
     当前余额(元
-    <a href="{:url('coinLog/withdraw')}">点此提现</a>)
+    <a class="js-ajax-dialog-btn" data-msg="将提现当前余额的最大整数" href="{:url('coinLog/withdraw')}">点此提现</a>)
     <div class="carpet" style="color:#00afec">
         <div class="one-from-two right-line tac">{$user_info.coin}<br>我的收益</div></a>
         <div class="one-from-two tac">{$user_info.other_coin}<br>好友收益</div></a>
@@ -23,7 +23,8 @@
     <div class="top-line">
         <php>
             $types = [
-                'task' => "任务"
+                'task' => "任务",
+                'withdraw' => "提现"
             ];
             $statuses = [
                 0 => '<span style="color:red;">审核中</span>',

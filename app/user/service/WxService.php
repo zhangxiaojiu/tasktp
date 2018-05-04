@@ -18,7 +18,7 @@ class WxService
             'app_secret' => 'cda06aca6c9663073c18f5ae630fb426',
             'token' => 'qianduoyatk',
             'aes_key' => 'IjmXovllF1DutNcyT3qWdI8AyaKFkn7syU22QU5s6bl',
-            'mch_id' => '1360471002',
+            'mch_id' => '1420231802',
             'key' => 'ceV0nixHOpO2hkVSU7HjvFFiLBYpcwHD',
         ];
     }
@@ -134,7 +134,7 @@ class WxService
     }
 
     //现金红包
-    public static function cashRedBag($openId,$nickName,$totalFee,$sendName,$outTradeNo,$wishing,$actName){
+    public static function cashRedBag($openId,$totalFee,$sendName,$outTradeNo,$wishing,$actName){
         $url = "https://api.mch.weixin.qq.com/mmpaymkttransfers/sendredpack";
         $config = self::getConfig();
         $unified = array(
@@ -142,10 +142,9 @@ class WxService
             'send_name' => $sendName,
             'mch_id' => $config['mch_id'],
             'nonce_str' => create_nonce_str(),
-            'nick_name' => $nickName,
             're_openid' => $openId,
             'mch_billno' => $outTradeNo,
-            'client_ip' => '127.0.0.1',
+            'client_ip' => get_client_ip(),
             'total_amount' => intval($totalFee * 100),       //单位 转为分
             'total_num'=>1,                 //红包发放总人数
             'wishing'=>$wishing,            //红包祝福语

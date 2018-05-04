@@ -9,7 +9,7 @@
 namespace app\user\controller;
 
 
-use app\user\service\WxService;
+use app\admin\service\CoinLogService;
 use cmf\controller\UserBaseController;
 use think\Db;
 
@@ -33,29 +33,29 @@ class CoinLogController extends UserBaseController
     /*
      * 提现
      */
-    public function withdraw_test(){
+    public function withdraw(){
         $uid = session('user.id');
         $userInfo = Db::name('user')->find($uid);
-        if($userInfo['balance'] <= 0){
-            $this->error('没有可提现金额');
+        if($userInfo['balance'] <= 1){
+            $this->error('提现金额必须大于1的整数');
         }
         $wxInfo = Db::name('third_party_user')->where(['user_id'=>$uid])->find();
         if($wxInfo['openid']){
-            $openId = $wxInfo['openid'];
             $nickName = $wxInfo['nickname'];
         }else{
             $this->error('未绑定微信');
         }
-        $sendName = "钱多呀";
         $outTradeNo = "QDY".$uid.'OT'.date("YmdHis",time()).mt_rand(100,999);
-        $wishing = "欢迎参与活动，请领取红包";
-        $actName = "挑战任务赢取现金红包";
-        $ret = WxService::cashRedBag($openId,$nickName,'1',$sendName,$outTradeNo,$wishing,$actName);
-        p($ret,0);
-        if($ret){
-            $this->success('提现成功');
-        }else{
-            $this->error($ret);
+        $clData = [
+            'uid' => $uid,
+            'coin' => 0-floor($userInfo['balance']),
+            'type' => 'withdraw',
+            'detail' => $outTradeNo.','.$nickName.',提现',
+            'status' => 0
+        ];
+        if(!CoinLogService::addCoinLog($clData)){
+            $this->error('失败');
         }
+        $this->success('成功');
     }
 }
