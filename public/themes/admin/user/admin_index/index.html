@@ -20,11 +20,11 @@
             <thead>
             <tr>
                 <th>ID</th>
-                <th>{:lang('USERNAME')}</th>
                 <th>{:lang('NICENAME')}</th>
                 <th>{:lang('AVATAR')}</th>
-                <th>{:lang('EMAIL')}</th>
-                <th>手机</th>
+                <th>余额</th>
+                <th>收益</th>
+                <th>好友收益</th>
                 <th>{:lang('REGISTRATION_TIME')}</th>
                 <th>{:lang('LAST_LOGIN_TIME')}</th>
                 <th>{:lang('LAST_LOGIN_IP')}</th>
@@ -39,12 +39,11 @@
             <foreach name="list" item="vo">
                 <tr>
                     <td>{$vo.id}</td>
-                    <td>{$vo['user_login']?$vo['user_login']:($vo['mobile']?$vo['mobile']:lang('THIRD_PARTY_USER'))}
-                    </td>
                     <td>{$vo['user_nickname']?$vo['user_nickname']:lang('NOT_FILLED')}</td>
                     <td><img width="25" height="25" src="{:url('user/public/avatar',array('id'=>$vo['id']))}"/></td>
-                    <td>{$vo.user_email}</td>
-                    <td>{$vo.mobile}</td>
+                    <td>{$vo.balance}</td>
+                    <td>{$vo.coin}</td>
+                    <td>{$vo.other_coin}</td>
                     <td>{:date('Y-m-d H:i:s',$vo['create_time'])}</td>
                     <td>{:date('Y-m-d H:i:s',$vo['last_login_time'])}</td>
                     <td>{$vo.last_login_ip}</td>
