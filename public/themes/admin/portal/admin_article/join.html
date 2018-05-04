@@ -5,14 +5,23 @@
     <ul class="nav nav-tabs">
         <li class="active"><a href="javascript:;">任务审核</a></li>
     </ul>
+    <php>
+        $selected = [
+            0=>$join_status == 0 ? 'selected':'',
+            -1=>$join_status == -1 ? 'selected':'',
+            1=>$join_status == 1 ? 'selected':'',
+            2=>$join_status == 2 ? 'selected':'',
+            3=>$join_status == 3 ? 'selected':'',
+        ];
+    </php>
     <form class="well form-inline margin-top-20" method="post" action="{:url('AdminArticle/join')}">
         状态:
         <select class="form-control" name="join_status" style="width: 140px;">
-            <option value='0'>全部</option>
-            <option value='-1'>已参加</option>
-            <option value='1'>已提交</option>
-            <option value='2'>已通过</option>
-            <option value='3'>未通过</option>
+            <option value='0' {$selected[0]}>全部</option>
+            <option value='-1' {$selected[-1]}>已参加</option>
+            <option value='1' {$selected[1]}>已提交</option>
+            <option value='2' {$selected[2]}>已通过</option>
+            <option value='3' {$selected[3]}>未通过</option>
         </select> &nbsp;&nbsp;
         时间:
         <input type="text" class="form-control js-bootstrap-datetime" name="start_time"
