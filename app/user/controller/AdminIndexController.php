@@ -156,7 +156,7 @@ class AdminIndexController extends AdminBaseController
         $sendName = "钱多呀";
         $wishing = "欢迎参与活动，请领取红包";
         $actName = "挑战任务赢取现金红包";
-        $ret = WxService::cashRedBag($openId,'1',$sendName,$outTradeNo,$wishing,$actName);
+        $ret = WxService::cashRedBag($openId,abs($clInfo['coin']),$sendName,$outTradeNo,$wishing,$actName);
         if($ret === true){
             Db::name('coin_log')->where(['id'=>$id])->setField('status',1);
             $this->success('提现成功');
