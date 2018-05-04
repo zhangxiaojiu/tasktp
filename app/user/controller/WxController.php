@@ -55,6 +55,7 @@ class WxController extends HomeBaseController
                 $userData['sex'] = $userRet['sex'];
                 $userData['avatar'] = $userRet['headimgurl'];
                 $userData['user_nickname'] = $userRet['nickname'];
+                $userData['last_login_time'] = time();
 
                 $info = Db::name('third_party_user')->where(['openid' => $data['openid']])->find();
 
@@ -63,6 +64,7 @@ class WxController extends HomeBaseController
                         $userData['pid'] = $state;
                         $userData['user_type'] = 2;
                         $userData['user_status'] = 1;
+                        $userData['create_time'] = time();
                         $uid = Db::name('user')->insertGetId($userData);
                         $data['user_id'] = $uid;
 
