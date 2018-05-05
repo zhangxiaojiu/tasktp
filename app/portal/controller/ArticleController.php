@@ -107,21 +107,23 @@ class ArticleController extends HomeBaseController
         if(Db::name('portal_join_post')->where($where)->find()){
             $joinContent = $this->request->param('join_content', null);
             $file   = $this->request->file('join_img');
+            $joinImages = '';
             if(count($file)>0) {
                 foreach ($file as $v) {
                     $ret = self::uploadImg($v);
                     if ($ret['code'] == 1) {
                         $src = $ret['data']['file'];
-                        $joinContent .= '<img style="width:100%;" src="/upload/task/' . $src . '" />';
+                        $joinImages .= '<img style="width:100%;" src="/upload/task/' . $src . '" />';
                     } else {
                         $this->error($ret['msg']);
                     }
                 }
             }
-            if(empty($joinContent)) {
+            if(empty($joinContent) && empty($joinImages)) {
                 $this->error('已经参与，请补交材料');
             }else{
                 $joinData['join_content'] = htmlspecialchars($joinContent);
+                $joinData['join_images'] = htmlspecialchars($joinImages);
                 $joinData['join_status'] = 1;
                 $joinData['update_time'] = time();
                 Db::name('portal_join_post')->where($where)->update($joinData);

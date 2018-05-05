@@ -39,6 +39,9 @@ class CoinLogController extends UserBaseController
         if($userInfo['balance'] <= 1){
             $this->error('提现金额必须大于1的整数');
         }
+        if(Db::name('coin_log')->where(['uid'=>$uid,'type'=>'withdraw','create_time'=>['>',strtotime(date('Y-m-d 00:00:00',time()))]])->find()){
+            $this->error('一天只能提现一次');
+        }
         $wxInfo = Db::name('third_party_user')->where(['user_id'=>$uid])->find();
         if($wxInfo['openid']){
             $nickName = $wxInfo['nickname'];

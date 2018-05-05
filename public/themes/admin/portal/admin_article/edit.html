@@ -95,6 +95,20 @@
                         </td>
                     </tr>
                     <tr>
+                        <th>查看数</th>
+                        <td>
+                            <input class="form-control" type="text" name="post[post_hits]"
+                                   value="{$post['post_hits']}" placeholder="请设置查看数">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>点赞数</th>
+                        <td>
+                            <input class="form-control" type="text" name="post[post_like]"
+                                   value="{$post['post_like']}" placeholder="请设置点赞数">
+                        </td>
+                    </tr>
+                    <tr class="hide">
                         <th>相册</th>
                         <td>
                             <ul id="photos" class="pic-list list-unstyled form-inline">
@@ -121,7 +135,7 @@
                                class="btn btn-sm btn-default">选择图片</a>
                         </td>
                     </tr>
-                    <tr>
+                    <tr class="hide">
                         <th>附件</th>
                         <td>
                             <ul id="files" class="pic-list list-unstyled form-inline">

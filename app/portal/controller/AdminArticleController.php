@@ -64,6 +64,9 @@ class AdminArticleController extends AdminBaseController
      */
     public function join(){
         $param = $this->request->param();
+        if(!empty($param)){
+            session('join_post_search',$param);
+        }
         $list = JoinPostService::JoinPostList($param);
 
         $this->assign('start_time', isset($param['start_time']) ? $param['start_time'] : '');
@@ -72,6 +75,40 @@ class AdminArticleController extends AdminBaseController
         $this->assign('join_status', isset($param['join_status']) ? $param['join_status'] : 1);
         $this->assign('list',$list);
         return $this->fetch();
+    }
+    /*
+     * 任务导出
+     */
+    public function outJoin(){
+        $param = session('join_post_search') ? session('join_post_search') : '';
+        $ret = JoinPostService::JoinPostListAll($param);
+
+        $status = [
+            0 => "已参与",
+            1 => "已提交",
+            2 => "合格",
+            3 => "不合格"
+        ];
+        foreach ($ret as $v){
+            $row = "";
+            $row[] = $v['post_title'];
+            $row[] = $v['user_nickname'];
+            $row[] = $v['join_content'];
+            $row[] = date('Y-m-d H:i:s',$v['published_time']);
+            $row[] = $status[$v['join_status']];
+            $list[] = $row;
+        }
+
+        $fileName = date('YmdHis').mt_rand(100,999);
+        $sheetName = "任务提交列表";
+        $title = [
+            "A" => "任务标题",
+            "B" => "用户名",
+            "C" => "提交内容",
+            "D" => "完成时间",
+            "E" => "状态"
+        ];
+        phpExcelXlsx($fileName,$sheetName,$title,$list);
     }
 
     /*
