@@ -1979,6 +1979,7 @@ function crQrcode($url='',$uid){
     //输出图片
     imagepng($QR, './upload/qrcode/qrlogo'.$uid.'.png');
     imagedestroy($QR);
+    unlink('./upload/qrcode/qr'.$uid.'.png');
 }
 //生成随机字符串，默认32位
 function create_nonce_str($length=32) {

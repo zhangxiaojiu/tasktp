@@ -9,6 +9,8 @@
 namespace app\user\service;
 
 
+use think\Db;
+
 class WxService
 {
     //本地配置
@@ -190,5 +192,31 @@ class WxService
             $reqPar = substr($buff, 0, strlen($buff) - 1);
         }
         return $reqPar;
+    }
+
+    //生成带参数的二维码图片
+    public static function createQr($uid){
+        $ticket = self::getQrTicket($uid);
+        $url = "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=".urlencode($ticket);
+        Db::name('user')->where(['id'=>$uid])->setField('user_url',$url);
+    }
+    private static function getQrTicket($uid){
+        $accessToken = self::returnSetAccessToken();
+        $token = $accessToken['access_token'];
+        $url = "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=".$token;
+        $param = [
+            "action_name" => "QR_LIMIT_SCENE",
+            "action_info" => [
+                "scene" => [
+                    "scene_id" => $uid
+                ]
+            ]
+        ];
+        $jsonParam = json_encode($param);
+        $ret = request_post($url,$jsonParam);
+        $url = $ret['url'];
+        crQrcode($url,$uid);
+        $ticket = $ret['ticket'];
+        return $ticket;
     }
 }

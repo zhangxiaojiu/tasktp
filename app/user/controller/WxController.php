@@ -28,9 +28,22 @@ class WxController extends HomeBaseController
         //签名正确 返回
         if($sign == $signature && $echoStr){
             echo $echoStr;
+            cmf_set_option('test',['reback'=>'signtrue']);
             exit;
         }else{
+            cmf_set_option('test',['reback'=>'signfalse']);
+            $postStr = $GLOBALS["HTTP_RAW_POST_DATA"];
+            $postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
+            $fromUsername = (string)$postObj->FromUserName;
+            cmf_set_option('test',['from'=>$fromUsername]);
+            $EventKey = trim((string)$postObj->EventKey);
+            $keyArray = explode("_", $EventKey);
+            if (count($keyArray) == 1){//已关注者扫描
+                cmf_set_option('test',['reback'=>$EventKey]);
 
+            }else {//未关注者关注后推送事件
+                cmf_set_option('test', ['reback' => $keyArray[1]]);
+            }
         }
     }
 
