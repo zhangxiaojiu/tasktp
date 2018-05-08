@@ -15,6 +15,7 @@ use think\Db;
 class WxController extends HomeBaseController
 {
     public function index(){
+        cmf_set_option('test',['reback'=>'in']);
         //get参数
         $echoStr = $_GET['echostr'];
         $signature = $_GET['signature'];
