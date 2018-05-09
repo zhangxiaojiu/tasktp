@@ -35,7 +35,8 @@ class WxController extends HomeBaseController
         $postStr = $GLOBALS["HTTP_RAW_POST_DATA"];
         $postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
         $event = (string)$postObj->Event;
-
+        cmf_set_option('test',['event'=>$event]);
+        exit;
         //扫描带参数的二维码
         if($event == "subscribe") {
             $fromUsername = (string)$postObj->FromUserName;
