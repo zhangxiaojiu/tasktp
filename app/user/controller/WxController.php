@@ -63,6 +63,15 @@ class WxController extends HomeBaseController
                 $data['user_id'] = $uid;
                 Db::name("third_party_user")->insert($data);
             }
+            $wxInfo = Db::name('third_party_user')->where(['user_id'=>$pid])->find();
+            $title = "您好，您的下级绑定成功";
+            $url = '';
+            $remark = "您的下级绑定成功，下级完成任务您将获得奖励";
+            $ret = WxService::sendWxtmp($wxInfo['openid'],$title,$url,'待完善',$remark,'bind');
+            $title = "绑定成功";
+            $url = 'http://www.qianduoya.com/user/profile/center';
+            $remark = "绑定成功，欢迎加入钱多呀,点击完善资料";
+            $ret = WxService::sendWxtmp($fromUsername,$title,$url,'待完善',$remark,'bind');
         }
     }
 
