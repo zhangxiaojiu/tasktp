@@ -98,6 +98,7 @@ class WxController extends HomeBaseController
 
                         $uInfo = Db::name('user')->find($uid);
                     }else{
+                        $userData['id'] = $info['user_id'];
                         Db::name('user')->update($userData);
                         $uInfo = Db::name('user')->find($info['user_id']);
                     }
