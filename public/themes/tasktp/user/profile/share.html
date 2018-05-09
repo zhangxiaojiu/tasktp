@@ -1,25 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{$user_info.user_nickname}  - 我的二维码</title>
+    <title>{$user_info.user_nickname}  - 邀请好友</title>
     <meta name="keywords" content=""/>
     <meta name="description" content="">
-    <include file="public@head"/>
 </head>
-<body>
-<!-- top bar -->
-<div class="user-top">
-    <img class="head" src="<empty name='user_info.avatar'>__TMPL__/../img/logo.png<else/>{$user_info.avatar}</empty>"><br/>
-    {$user_info.user_nickname}<br/>
-    <h4 class="color-gold">¥{$user_info.balance}</h4>
-</div></div>
-<!-- end top bar -->
-<div class="carpet" style="text-align: center;">
-    <h3>我的分享二维码</h3>
-    <img style="margin:10px auto; width:80%;" src="{$img_url}">
-</div>
-<include file="public@footer" />
-<!-- /container -->
-<include file="public@scripts" />
+<body style="width:100%; margin-bottom:17%; background:url('/themes/tasktp/public/assets/images/tasktp/share_back.png') no-repeat; background-size:100% auto; text-align:center;" >
+    <img style=" width:57%; margin-top:102%;" src="{$img_url}">
 </body>
 </html>

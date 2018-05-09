@@ -38,6 +38,10 @@ class ProfileController extends UserBaseController
 
         $userModel = new UserModel();
         $user      = $userModel->where('id', $userId)->find();
+
+        $childIds = \app\admin\model\UserModel::getChildIds($userId);
+        $friends = count($childIds);
+        $this->assign('friends', $friends);
         $this->assign('user', $user);
         return $this->fetch();
     }
@@ -53,6 +57,9 @@ class ProfileController extends UserBaseController
         }
         $imgUrl = '/upload/qrcode/qrlogo'.$uid.'.png';
         $this->assign('img_url',$imgUrl);
+        return $this->fetch();
+    }
+    public function shareRule(){
         return $this->fetch();
     }
 

@@ -1,6 +1,6 @@
 @CHARSET "UTF-8";
 body {
-    background: #eee;
+    background: #f6f6f6;
 }
 
 body.body-white {
@@ -19,8 +19,12 @@ body.body-white {
 .pt20{padding-top:20px;}
 .fs18{font-size:18px;}
 .w100{width:100%;}
+.b-blue{background:#3399ff !important;}
+.b-red{background:#ff6666 !important;}
+.b-yellow{background:#ff9900 !important;}
+.b-green{background:#66cc66 !important;}
 /*地毯*/
-.carpet{background:#fff; width:98%; border-radius:5px; border:1px solid #ddd; margin:10px auto; padding:10px; box-shadow: 0 1px 1px rgba(0,0,0,.05);}
+.carpet{background:#fff; width:98%; border-radius:5px; margin:10px auto; padding:10px; box-shadow: 0 1px 1px rgba(0,0,0,.05);}
 /*地毯毛*/
 .carpet .tac{text-align: center;}
 .carpet .view-money{color:#00afec;font-weight:bold;}
@@ -54,8 +58,39 @@ body.body-white {
     color: #fff;
 }
 /*个人中心*/
-.user-top{background: #f02390; height:180px; text-align: center;color:#fff; margin-bottom:20px;}
-.user-top img{width:20%; margin:15px auto; border-radius: 50%; background: #fff;}
+.user-top{
+    background:linear-gradient(#fff, #f02390);
+    height:180px; color:#fff;
+}
+.user-coin{
+    background:#f02390;
+    height:180px;
+    color:#fff;
+    text-align:center;
+}
+.user-line{width:100%;}
+.user-top img{height:80px; border-radius: 50%; margin-top:80px; margin-left:20px;}
+.user-top .text{border:2px solid #fff; border-radius:20px; padding:5px 20px; margin-top:80px; position:relative; top:42px; left:10px; color:#fff;}
+.user-menu{
+    display:block;
+    color: #555;
+    font-size: 18px;
+    line-height: 30px;
+    border-bottom: 1px solid #ccc;
+    padding: 5px;
+}
+.user-menu span{font-size:10px;color:#999; margin-right:20px;}
+.left-icon{
+    display:inline-block;
+    text-align:center;
+    line-height:30px;
+    width:30px;
+    height:30px;
+    margin-right:10px;
+    background: #000;
+    border-radius: 15px;
+    color:#fff;
+}
 .top-bar{background: #f02390; line-height:50px; height:50px; color:#fff; font-size: 20px; text-align: center; width:100%; position:fixed; top:0px;}
 .top-bar a span{font-size:25px; line-height: 50px; color:#fff;}
 

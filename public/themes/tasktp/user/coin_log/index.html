@@ -6,15 +6,14 @@
 </head>
 <body>
 <!-- top bar -->
-<div class="top-bar pr30"><a href="{:url('profile/center')}"><span class="glyphicon glyphicon-menu-left fl"></span></a>我的钱包</div>
+<div class="top-bar pr30 "><a href="{:url('profile/center')}"><span class="glyphicon glyphicon-menu-left fl"></span></a>我的钱包</div>
 <div class="mt50"></div>
-<div class="user-top">
+<div class="user-coin">
     <h1 class="pt10">￥{$user_info.balance}</h1>
-    当前余额(元
-    <a class="js-ajax-dialog-btn" data-msg="将提现当前余额的最大整数" href="{:url('coinLog/withdraw')}">点此提现</a>)
+    当前余额(元)
     <div class="carpet" style="color:#00afec">
         <div class="one-from-two right-line tac">{$user_info.coin}<br>我的收益</div></a>
-        <div class="one-from-two tac">{$user_info.other_coin}<br>好友收益</div></a>
+        <div class="one-from-two tac">{$user_info.other_coin}<br>团队收益</div></a>
     </div>
 </div>
 

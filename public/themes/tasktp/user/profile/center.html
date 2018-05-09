@@ -11,19 +11,27 @@
 	<div class="container">
 		<div class="row">
 			<div class="user-top">
-				<img class="head" src="<empty name='user.avatar'>__TMPL__/lklrj/public/assets/home/head.png<else/>{$user.avatar}</empty>"><br/>
-				{$user.user_nickname}<br/>
-				<h4 class="color-gold">¥{$user.balance}</h4>
+				<img class="head" src="<empty name='user.avatar'>__TMPL__/../public/img/logo.png<else/>{$user.avatar}</empty>">
+				<a href="{:url('coinLog/index')}"><span class="text">(ID:{$user.id}) 可用余额：{$user.balance}元</span></a>
 			</div>
-			<div class="carpet">
-				<a href="{:url('coinLog/index')}"><div class="one-from-two right-line tac"><span class="glyphicon glyphicon-piggy-bank"></span><br>我的钱包</div></a>
-				<a href="{:url('favorite/task')}"><div class="one-from-two tac"><span class="glyphicon glyphicon-tags"></span><br>我的任务</div></a>
-			</div>
-			<div class="carpet">
-				<include file="public@usernav" />
-			</div>
+			<img class="user-line" src="__TMPL__/public/assets/images/tasktp/user_line.png">
+		</div>
+		<div class="carpet">
+			<div class="user-menu"><i class="fa fa-paper-plane left-icon b-blue"></i>我的推广<i class="fa fa-angle-right fr"></i><span class="fr"><a href="{:cmf_url('user/friends/index')}">{$friends}人</a>/<a href="{:url('coinLog/index')}">{$user.other_coin}元</a></span></div>
+		</div>
+		<div class="carpet">
+			<a class="user-menu" href="{:cmf_url('user/profile/share')}"><i class="fa fa-recycle left-icon b-red"></i>邀请好友<i class="fa fa-angle-right fr"></i><span class="fr">赚钱喜悦，总结分享</span></a>
+			<a class="user-menu" href="{:cmf_url('user/profile/shareRule')}"><i class="fa fa-question left-icon b-blue"></i>邀请规则<i class="fa fa-angle-right fr"></i></a>
+			<a class="user-menu js-ajax-dialog-btn" data-msg="资金将进行提现审核" href="{:url('coinLog/withdraw')}"><i class="fa fa-dollar left-icon b-yellow"></i>微信提现<i class="fa fa-angle-right fr"></i><span class="fr">余额：{$user.balance}元</span> </a>
+		</div>
+		<div class="carpet">
+			<a class="user-menu" href="{:cmf_url('user/friends/index')}"><i class="fa fa-group left-icon b-yellow"></i>团队成员<i class="fa fa-angle-right fr"></i></a>
+			<a class="user-menu"><i class="fa fa-bar-chart left-icon b-green"></i>好友排行<i class="fa fa-angle-right fr"></i></a>
+			<a class="user-menu"><i class="fa fa-comment left-icon b-yellow"></i>互动论坛<i class="fa fa-angle-right fr"></i></a>
+			<a class="user-menu" href="{:cmf_url('user/favorite/index')}"><i class="fa fa-heart left-icon b-red"></i>我的收藏<i class="fa fa-angle-right fr"></i></a>
+			<a class="user-menu" href="{:url('favorite/task')}"><i class="fa fa-tasks left-icon b-blue"></i>我的任务<i class="fa fa-angle-right fr"></i></a>
+		</div>
 		<include file="public@footer" />
-	</div>
 <!-- /container -->
 <include file="public@scripts" />
 </body>
