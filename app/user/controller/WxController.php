@@ -34,7 +34,9 @@ class WxController extends HomeBaseController
 
         $postStr = $GLOBALS["HTTP_RAW_POST_DATA"];
         $postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
-        $toUser = (string)$postObj->toUser;
+        $msgType = (string)$postObj->MsgType;
+        cmf_set_option('test',['type'=>$msgType]);
+        exit;
         $fromUsername = (string)$postObj->FromUserName;
         $EventKey = trim((string)$postObj->EventKey);
         $keyArray = explode("_", $EventKey);
