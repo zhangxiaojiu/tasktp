@@ -34,33 +34,35 @@ class WxController extends HomeBaseController
 
         $postStr = $GLOBALS["HTTP_RAW_POST_DATA"];
         $postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
-        $msgType = (string)$postObj->MsgType;
-        cmf_set_option('test',['type'=>$msgType]);
-        exit;
-        $fromUsername = (string)$postObj->FromUserName;
-        $EventKey = trim((string)$postObj->EventKey);
-        $keyArray = explode("_", $EventKey);
-        if (count($keyArray) == 1){//已关注者扫描
-            $pid = $EventKey;
-        }else {//未关注者关注后推送事件
-            $pid = $keyArray[1];
-        }
-        $info = Db::name('third_party_user')->where(['openid' => $fromUsername])->find();
-        if($info){
-            if(empty($info['user_id'])) {
+        $event = (string)$postObj->Event;
+
+        //扫描带参数的二维码
+        if($event == "subscribe") {
+            $fromUsername = (string)$postObj->FromUserName;
+            $EventKey = trim((string)$postObj->EventKey);
+            $keyArray = explode("_", $EventKey);
+            if (count($keyArray) == 1) {//已关注者扫描
+                $pid = $EventKey;
+            } else {//未关注者关注后推送事件
+                $pid = $keyArray[1];
+            }
+            $info = Db::name('third_party_user')->where(['openid' => $fromUsername])->find();
+            if ($info) {
+                if (empty($info['user_id'])) {
+                    $uData['pid'] = $pid;
+                    $uData['create_time'] = time();
+                    $uid = Db::name('user')->insertGetId($uData);
+                    $data['user_id'] = $uid;
+                    Db::name("third_party_user")->where(['openid' => $fromUsername])->update($data);
+                }
+            } else {
                 $uData['pid'] = $pid;
                 $uData['create_time'] = time();
                 $uid = Db::name('user')->insertGetId($uData);
+                $data['openid'] = $fromUsername;
                 $data['user_id'] = $uid;
-                Db::name("third_party_user")->where(['openid'=>$fromUsername])->update($data);
+                Db::name("third_party_user")->insert($data);
             }
-        }else{
-            $uData['pid'] = $pid;
-            $uData['create_time'] = time();
-            $uid = Db::name('user')->insertGetId($uData);
-            $data['openid'] = $fromUsername;
-            $data['user_id'] = $uid;
-            Db::name("third_party_user")->insert($data);
         }
     }
 
