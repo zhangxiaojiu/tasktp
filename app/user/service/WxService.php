@@ -100,34 +100,23 @@ class WxService
         $ret = request_post($url,urldecode($params));
         return $ret;
     }
-    //模版 账户变更
-    public static function tmpAccountChange($openId,$type,$account,$remark){
-        switch ($type){
-            case 1:
-                $title = '分润到账提醒';
-                $type = '分润';
-                break;
-            case 2:
-                $title = '机器激活提醒';
-                $type = '激活';
-                break;
-            case 3:
-                $title = '提现申请打款提醒';
-                $type = '提现';
-                break;
-            default:
+    //模版
+    public static function sendWxtmp($openId,$title,$url,$key1,$remark,$type){
+        if($type == 'bind'){
+            $template = "SnRCldIx937D-4PV4ugES4eQL81cY9sFZhV-MWcke5c";
+        }else if($type == 'void'){
+            $template = "DauugAg9Gf5Ac8dCkimZ7LuzU0bM1BTO7MIKmGwfttM";
         }
         $data = [
             'first' =>  ['value'=>$title,'color'=>'#000'],
-            'account' =>  ['value'=>$account,'color'=>'#000'],
-            'time' =>  ['value'=>date("Y-m-d H:i:s",time()),'color'=>'#00f'],
-            'type' =>  ['value'=>$type,'color'=>'#000'],
+            'keyword1' =>  ['value'=>$key1,'color'=>'#000'],
+            'keyword2' =>  ['value'=>date("Y-m-d H:i:s",time()),'color'=>'#00f'],
             'remark' =>  ['value'=>$remark,'color'=>'#666']
         ];
         $params = [
             'touser' => $openId,
-            'template_id' => 'UP0rah2nHfF1V-45IXtibp63t9Hvm4zKIM6qoIvr8mY',
-            'url' => 'http://app.mylabulaka.com/wx/auth',
+            'template_id' => $template,
+            'url' => $url,
             'data' => $data
         ];
         $json = json_encode($params);

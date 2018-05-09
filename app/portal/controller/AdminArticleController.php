@@ -12,6 +12,7 @@ namespace app\portal\controller;
 
 use app\admin\service\CoinLogService;
 use app\portal\service\JoinPostService;
+use app\user\service\WxService;
 use cmf\controller\AdminBaseController;
 use app\portal\model\PortalPostModel;
 use app\portal\service\PostService;
@@ -134,6 +135,12 @@ class AdminArticleController extends AdminBaseController
             CoinLogService::taskUserParents($jpInfo['user_id'],$jpInfo['post_money']);
 
             Db::commit();
+            //发送微信模版
+            $wxInfo = Db::name('third_party_user')->where(['user_id'=>$jpInfo['user_id']])->find();
+            $title = "您好，您的任务审核通过";
+            $url = 'http://www.qianduoya.com/user/favorite/task';
+            $remark = "恭喜，您提交的任务《".$jpInfo['post_title']."》已经审核通过，奖励已下发";
+            $ret = WxService::sendWxtmp($wxInfo['openid'],$title,$url,'成功',$remark,'void');
             $this->success('通过成功');
         }
     }
@@ -142,8 +149,15 @@ class AdminArticleController extends AdminBaseController
      */
     public function joinProhibit(){
         $id = $this->request->param('id',0);
-        if(JoinPostService::setJoinStatus($id,3,'published_time'))
-        $this->success('驳回成功');
+        if(JoinPostService::setJoinStatus($id,3,'published_time')) {
+            $jpInfo = JoinPostService::JoinPostInfo($id);
+            $wxInfo = Db::name('third_party_user')->where(['user_id'=>$jpInfo['user_id']])->find();
+            $title = "您好，您的任务审核不通过";
+            $url = 'http://www.qianduoya.com/user/favorite/task';
+            $remark = "您提交的任务《".$jpInfo['post_title']."》审核没有通过，请仔细查看说明后重新提交";
+            $ret = WxService::sendWxtmp($wxInfo['openid'],$title,$url,'失败',$remark,'void');
+            $this->success('驳回成功');
+        }
     }
 
     /**
