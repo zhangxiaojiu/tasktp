@@ -60,15 +60,6 @@ class WxController extends HomeBaseController
             $data['user_id'] = $uid;
             Db::name("third_party_user")->insert($data);
         }
-        $pName = Db::name('user')->where(['id'=>$pid])->field('user_nickname');
-        $param = [
-            "touser" => $fromUsername,
-            "msgtype" => "text",
-            "text" => [
-                "content"=>"您已绑定为".$pName."的下级"
-            ]
-        ];
-        WxService::sendMsg($param);
     }
 
     //微信用户签名
@@ -107,6 +98,7 @@ class WxController extends HomeBaseController
 
                         $uInfo = Db::name('user')->find($uid);
                     }else{
+                        Db::name('user')->update($userData);
                         $uInfo = Db::name('user')->find($info['user_id']);
                     }
                     session('user',$uInfo);
