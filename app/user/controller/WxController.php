@@ -62,11 +62,11 @@ class WxController extends HomeBaseController
         }
         $pName = Db::name('user')->where(['id'=>$pid])->field('user_nickname');
         $param = [
-            "ToUserName" => $fromUsername,
-            "FromUserName" => $toUser,
-            "CreateTime" => date("Y-m-d H:i:s"),
-            "MsgType" => "text",
-            "Content" => "欢迎关注钱多呀，您已绑定为".$pName."的下级"
+            "touser" => $fromUsername,
+            "msgtype" => "text",
+            "text" => [
+                "content"=>"您已绑定为".$pName."的下级"
+            ]
         ];
         WxService::sendMsg($param);
     }
