@@ -28,7 +28,9 @@ class HomeBaseController extends BaseController
         if(!empty($uid)) {
             $id = session('user.id');
             $userInfo = Db::name('user')->find($id);
-
+            if($userInfo['user_status'] == 0){
+                p('用户已被拉黑',0);
+            }
         }else{
             $userInfo['user_nickname'] = "钱多呀";
         }
