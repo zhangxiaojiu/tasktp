@@ -15,37 +15,40 @@ use think\Db;
 class WxController extends HomeBaseController
 {
     public function index(){
-        cmf_set_option('test',['reback'=>'in']);
         //get参数
-        $echoStr = $_GET['echostr'];
-        $signature = $_GET['signature'];
-        $timestamp = $_GET['timestamp'];
-        $nonce = $_GET['nonce'];
-        //配置参数
-        $config = WxService::getConfig();
-        $token = $config['token'];
-        //获取签名
-        $sign = WxService::getSign($token,$timestamp,$nonce);
-        //签名正确 返回
-        if($sign == $signature && $echoStr){
-            echo $echoStr;
-            cmf_set_option('test',['reback'=>'signtrue']);
-            exit;
-        }else{
-            cmf_set_option('test',['reback'=>'signfalse']);
-            $postStr = $GLOBALS["HTTP_RAW_POST_DATA"];
-            $postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
-            $fromUsername = (string)$postObj->FromUserName;
-            cmf_set_option('test',['from'=>$fromUsername]);
-            $EventKey = trim((string)$postObj->EventKey);
-            $keyArray = explode("_", $EventKey);
-            if (count($keyArray) == 1){//已关注者扫描
-                cmf_set_option('test',['reback'=>$EventKey]);
+//        $echoStr = $_GET['echostr'];
+//        $signature = $_GET['signature'];
+//        $timestamp = $_GET['timestamp'];
+//        $nonce = $_GET['nonce'];
+//        //配置参数
+//        $config = WxService::getConfig();
+//        $token = $config['token'];
+//        //获取签名
+//        $sign = WxService::getSign($token,$timestamp,$nonce);
+//        //签名正确 返回
+//        if($sign == $signature && $echoStr){
+//            echo $echoStr;
+//            cmf_set_option('test',['reback'=>'signtrue']);
+//            exit;
+//        }
 
-            }else {//未关注者关注后推送事件
-                cmf_set_option('test', ['reback' => $keyArray[1]]);
-            }
+        //自定菜单
+        cmf_set_option('test',['reback'=>'in']);
+        WxService::createMenu();
+        cmf_set_option('test',['reback'=>'aftermenu']);
+        $postStr = $GLOBALS["HTTP_RAW_POST_DATA"];
+        $postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
+        $fromUsername = (string)$postObj->FromUserName;
+        cmf_set_option('test',['from'=>$fromUsername]);
+        $EventKey = trim((string)$postObj->EventKey);
+        $keyArray = explode("_", $EventKey);
+        if (count($keyArray) == 1){//已关注者扫描
+            cmf_set_option('test',['reback'=>$EventKey]);
+
+        }else {//未关注者关注后推送事件
+            cmf_set_option('test', ['reback' => $keyArray[1]]);
         }
+
     }
 
     //微信用户签名

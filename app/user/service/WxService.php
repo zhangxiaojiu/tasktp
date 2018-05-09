@@ -219,4 +219,28 @@ class WxService
         $ticket = $ret['ticket'];
         return $ticket;
     }
+
+    //创建自定义菜单
+    public static function createMenu(){
+        $accessToken = self::returnSetAccessToken();
+        $token = $accessToken['access_token'];
+        $url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=".$token;
+        $param = [
+            "button" => [
+                [
+                    "type" => "view",
+                    "name" => "首页",
+                    "url" => "http://www.qianduoya.com"
+                ],
+                [
+                    "type" => "view",
+                    "name" => "个人中心",
+                    "url" => "http://www.qianduoya.com/user/profile/center"
+                ]
+            ]
+        ];
+        $jsonParam = json_encode($param);
+        $ret = request_post($url,$jsonParam);
+        return $ret;
+    }
 }
