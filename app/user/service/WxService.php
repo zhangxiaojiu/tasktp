@@ -239,7 +239,17 @@ class WxService
                 ]
             ]
         ];
-        $jsonParam = json_encode($param);
+        $jsonParam = json_encode($param,JSON_UNESCAPED_UNICODE);
+        $ret = request_post($url,$jsonParam);
+        return $ret;
+    }
+
+    //回复信息
+    public static function sendMsg($param){
+        $accessToken = self::returnSetAccessToken();
+        $token = $accessToken['access_token'];
+        $url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token".$token;
+        $jsonParam = json_encode($param,JSON_UNESCAPED_UNICODE);
         $ret = request_post($url,$jsonParam);
         return $ret;
     }

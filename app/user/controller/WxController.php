@@ -32,23 +32,43 @@ class WxController extends HomeBaseController
 //            exit;
 //        }
 
-        //自定菜单
-        cmf_set_option('test',['reback'=>'in']);
-        WxService::createMenu();
-        cmf_set_option('test',['reback'=>'aftermenu']);
         $postStr = $GLOBALS["HTTP_RAW_POST_DATA"];
         $postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
+        $toUser = (string)$postObj->toUser;
         $fromUsername = (string)$postObj->FromUserName;
-        cmf_set_option('test',['from'=>$fromUsername]);
         $EventKey = trim((string)$postObj->EventKey);
         $keyArray = explode("_", $EventKey);
         if (count($keyArray) == 1){//已关注者扫描
-            cmf_set_option('test',['reback'=>$EventKey]);
-
+            $pid = $EventKey;
         }else {//未关注者关注后推送事件
-            cmf_set_option('test', ['reback' => $keyArray[1]]);
+            $pid = $keyArray[1];
         }
-
+        $info = Db::name('third_party_user')->where(['openid' => $fromUsername])->find();
+        if($info){
+            if(empty($info['user_id'])) {
+                $uData['pid'] = $pid;
+                $uData['create_time'] = time();
+                $uid = Db::name('user')->insertGetId($uData);
+                $data['user_id'] = $uid;
+                Db::name("third_party_user")->where(['openid'=>$fromUsername])->update($data);
+            }
+        }else{
+            $uData['pid'] = $pid;
+            $uData['create_time'] = time();
+            $uid = Db::name('user')->insertGetId($uData);
+            $data['openid'] = $fromUsername;
+            $data['user_id'] = $uid;
+            Db::name("third_party_user")->insert($data);
+        }
+        $pName = Db::name('user')->where(['id'=>$pid])->field('user_nickname');
+        $param = [
+            "ToUserName" => $fromUsername,
+            "FromUserName" => $toUser,
+            "CreateTime" => date("Y-m-d H:i:s"),
+            "MsgType" => "text",
+            "Content" => "欢迎关注钱多呀，您已绑定为".$pName."的下级"
+        ];
+        WxService::sendMsg($param);
     }
 
     //微信用户签名

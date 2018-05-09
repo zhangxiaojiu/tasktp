@@ -11,6 +11,7 @@
 namespace app\admin\controller;
 
 use app\admin\model\RouteModel;
+use app\user\service\WxService;
 use cmf\controller\AdminBaseController;
 
 use think\Db;
@@ -254,5 +255,11 @@ class SettingController extends AdminBaseController
         return $this->fetch();
     }
 
-
+    /*
+     * 创建微信菜单
+     */
+    public function createWxMenu(){
+        $ret = WxService::createMenu();
+        p($ret);
+    }
 }
