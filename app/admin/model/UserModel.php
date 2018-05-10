@@ -18,7 +18,7 @@ class UserModel extends Model
 
 
     public static function getChildIds($id, $level=false){
-        $childIds = [];
+        $childIds = $seconds = $thirds = [];
         $childList = Db::name('user')->where(['pid'=>$id])->select();
         if(count($childList) > 0){
             foreach ($childList as $v){
