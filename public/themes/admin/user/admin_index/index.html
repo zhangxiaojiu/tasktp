@@ -28,7 +28,7 @@
                 <th>好友收益</th>
                 <!--<th>{:lang('REGISTRATION_TIME')}</th>-->
                 <th>{:lang('LAST_LOGIN_TIME')}</th>
-                <th>{:lang('LAST_LOGIN_IP')}</th>
+                <th>奖金比例</th>
                 <th>{:lang('STATUS')}</th>
                 <th>{:lang('ACTIONS')}</th>
             </tr>
@@ -51,7 +51,14 @@
                     <td>{$vo.other_coin}</td>
                     <!--<td>{:date('Y-m-d H:i:s',$vo['create_time'])}</td>-->
                     <td>{:date('Y-m-d H:i:s',$vo['last_login_time'])}</td>
-                    <td>{$vo.last_login_ip}</td>
+                    <td>
+                        <form class="js-ajax-form" action="{:url('adminIndex/setScale')}" method="post">
+                            <input type="hidden" name="id" value="{$vo.id}">
+                            <input style="width:60px;" type="text" name="scale_second" placeholder="二级比例" value="{$vo.scale_second}">
+                            <input style="width:60px;" type="text" name="scale_third" placeholder="三级比例" value="{$vo.scale_third}">
+                            <button class="js-ajax-submit">设置</button>
+                        </form>
+                    </td>
                     <td>{$user_statuses[$vo['user_status']]}</td>
                     <td>
                         <neq name="vo.id" value="1">

@@ -180,4 +180,19 @@ class AdminIndexController extends AdminBaseController
             $this->error($ret[0]);
         }
     }
+
+    /*
+     * 设置比例
+     */
+    public function setScale(){
+        $id = input('param.id', 0, 'intval');
+        if($id <= 1){
+            $this->error('参数错误');
+        }
+        $data['id'] = $id;
+        $data['scale_second'] = input('param.scale_second', null);
+        $data['scale_third'] = input('param.scale_third', null);
+        Db::name('user')->update($data);
+        $this->success('设置成功');
+    }
 }

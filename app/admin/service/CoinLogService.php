@@ -49,21 +49,34 @@ class CoinLogService
         $uInfo = Db::name('user')->find($id);
         if($uInfo['pid']>0){
             $taskSet = cmf_get_option('task_settings');
+
+            $pInfo = Db::name('user')->find($uInfo['pid']);
+            if($pInfo['scale_second'] > 0){
+                $scaleSecond = $pInfo['scale_second'];
+            }else{
+                $scaleSecond = $taskSet['one'];
+            }
+
             $clData = [
                 'uid' => $uInfo['pid'],
-                'coin' => $money*$taskSet['one'],
+                'coin' => $money * $scaleSecond,
                 'type' => 'task',
-                'detail' => '二级用户「'.$uInfo['user_nickname'].'」完成任务奖励¥'.$money*$taskSet['one'],
+                'detail' => '二级用户「'.$uInfo['user_nickname'].'」完成任务奖励¥'.$money * $scaleSecond,
                 'status' => 1
             ];
             self::addCoinLog($clData,'other_coin');
-            $pInfo = Db::name('user')->find($uInfo['pid']);
             if($pInfo['pid']>0) {
+                $ppInfo = Db::name('user')->find($pInfo['pid']);
+                if($ppInfo['scale_third'] > 0){
+                    $scaleThird = $ppInfo['scale_third'];
+                }else{
+                    $scaleThird = $taskSet['two'];
+                }
                 $clData = [
                     'uid' => $pInfo['pid'],
-                    'coin' => $money * $taskSet['two'],
+                    'coin' => $money * $scaleThird,
                     'type' => 'task',
-                    'detail' => '三级用户「' . $uInfo['user_nickname'] . '」完成任务奖励¥' . $money * $taskSet['two'],
+                    'detail' => '三级用户「' . $uInfo['user_nickname'] . '」完成任务奖励¥' . $money * $scaleThird,
                     'status' => 1
                 ];
                 self::addCoinLog($clData,'other_coin');
