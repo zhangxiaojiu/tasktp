@@ -11,6 +11,7 @@
 
 namespace app\user\controller;
 
+use app\admin\model\UserModel;
 use app\user\service\WxService;
 use cmf\controller\AdminBaseController;
 use think\Db;
@@ -73,6 +74,21 @@ class AdminIndexController extends AdminBaseController
 
         $list = $usersQuery->whereOr($keywordComplex)->where($where)->order("create_time DESC")->paginate(10);
         // 获取分页显示
+        $page = $list->render();
+        $this->assign('list', $list);
+        $this->assign('page', $page);
+        // 渲染模板输出
+        return $this->fetch();
+    }
+
+    /*
+     * 下级列表
+     */
+    public function childList(){
+        $id = input('param.id', 0, 'intval');
+        $level = input('param.level', false);
+        $childIds = UserModel::getChildIds($id,$level);
+        $list = Db::name('user')->where(['id'=>['in',$childIds]])->paginate(10);
         $page = $list->render();
         $this->assign('list', $list);
         $this->assign('page', $page);
