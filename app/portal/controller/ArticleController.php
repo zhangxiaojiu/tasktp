@@ -28,6 +28,12 @@ class ArticleController extends HomeBaseController
         $articleId  = $this->request->param('id', 0, 'intval');
         $categoryId = $this->request->param('cid', 0, 'intval');
         $article    = $postService->publishedArticle($articleId, $categoryId);
+        $categoryName = $article['categories'][0]['name'];
+        if($categoryName == "文章"){
+            $isArticle = 1;
+        }else{
+            $isArticle = 0;
+        }
 
         if (empty($article)) {
             abort(404, '文章不存在!');
@@ -69,6 +75,7 @@ class ArticleController extends HomeBaseController
         if(!empty($uid)){
             $joinPost = Db::name('portal_join_post')->where(['user_id'=>$uid,'post_id'=>$articleId])->find();
         }
+        $this->assign('is_article',$isArticle);
         $this->assign('join_post',$joinPost);
         $this->assign('article', $article);
         $this->assign('prev_article', $prevArticle);
