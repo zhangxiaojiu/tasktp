@@ -21,7 +21,7 @@ class ListController extends HomeBaseController
         $portalCategoryModel = new PortalCategoryModel();
 
         $category = $portalCategoryModel->where('id', $id)->where('status', 1)->find();
-        $categoryList = $portalCategoryModel->where('status', 1)->select();
+        $categoryList = $portalCategoryModel->where('status', 1)->where(['name'=>['neq','文章']])->select();
 
         $this->assign('category', $category);
         $this->assign('category_list', $categoryList);

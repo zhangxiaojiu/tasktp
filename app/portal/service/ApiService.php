@@ -88,6 +88,9 @@ class ApiService
 
             $field = !empty($param['field']) ? $param['field'] : 'post.*,min(category_post.category_id) as category_id';
             array_push($join, ['__PORTAL_CATEGORY_POST__ category_post', 'post.id = category_post.post_id']);
+
+            $categoryArticleId = Db::name('portal_category')->where(['name'=>'文章'])->value('id');
+            $where['category_post.category_id'] = ['neq', $categoryArticleId];
         }
 
         $articles = $portalPostModel->alias('post')->field($field)
