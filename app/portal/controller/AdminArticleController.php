@@ -22,6 +22,23 @@ use app\admin\model\ThemeModel;
 
 class AdminArticleController extends AdminBaseController
 {
+    public function article(){
+        $param = $this->request->param();
+        $postService = new PostService();
+        $category = Db::name('portal_category')->where(['name'=>'文章'])->find();
+        $param['category'] = $category['id'];
+        $data        = $postService->adminArticleList($param);
+        $data->appends($param);
+
+        $this->assign('start_time', isset($param['start_time']) ? $param['start_time'] : '');
+        $this->assign('end_time', isset($param['end_time']) ? $param['end_time'] : '');
+        $this->assign('keyword', isset($param['keyword']) ? $param['keyword'] : '');
+        $this->assign('articles', $data->items());
+        $this->assign('page', $data->render());
+
+
+        return $this->fetch();
+    }
     /**
      * 文章列表
      * @adminMenu(
@@ -41,13 +58,16 @@ class AdminArticleController extends AdminBaseController
 
         $categoryId = $this->request->param('category', 0, 'intval');
 
+        $articleCategory = Db::name('portal_category')->where(['name'=>'文章'])->find();
+        $param['neqCategory'] = $articleCategory['id'];
+        
         $postService = new PostService();
         $data        = $postService->adminArticleList($param);
 
         $data->appends($param);
 
         $portalCategoryModel = new PortalCategoryModel();
-        $categoryTree        = $portalCategoryModel->adminCategoryTree($categoryId);
+        $categoryTree        = $portalCategoryModel->adminCategoryTree($categoryId,$articleCategory['id']);
 
         $this->assign('start_time', isset($param['start_time']) ? $param['start_time'] : '');
         $this->assign('end_time', isset($param['end_time']) ? $param['end_time'] : '');
@@ -180,6 +200,12 @@ class AdminArticleController extends AdminBaseController
         $this->assign('article_theme_files', $articleThemeFiles);
         return $this->fetch();
     }
+    public function addArticle()
+    {
+        $category = Db::name('portal_category')->where(['name'=>'文章'])->find();
+        $this->assign('categoryId',$category['id']);
+        return $this->fetch();
+    }
 
     /**
      * 添加文章提交
@@ -232,7 +258,7 @@ class AdminArticleController extends AdminBaseController
             hook('portal_admin_after_save_article', $hookParam);
 
 
-            $this->success('添加成功!', url('AdminArticle/edit', ['id' => $portalPostModel->id]));
+            $this->success('添加成功!');
         }
 
     }
@@ -265,6 +291,19 @@ class AdminArticleController extends AdminBaseController
         $this->assign('post', $post);
         $this->assign('post_categories', $postCategories);
         $this->assign('post_category_ids', $postCategoryIds);
+
+        return $this->fetch();
+    }
+    public function editArticle()
+    {
+        $id = $this->request->param('id', 0, 'intval');
+
+        $portalPostModel = new PortalPostModel();
+        $post            = $portalPostModel->where('id', $id)->find();
+        $postCategories  = $post->categories()->alias('a')->column('a.name', 'a.id');
+        $postCategoryIds = implode(',', array_keys($postCategories));
+        $this->assign('post', $post);
+        $this->assign('categoryId', $postCategoryIds);
 
         return $this->fetch();
     }
