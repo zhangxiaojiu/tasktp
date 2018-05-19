@@ -1,0 +1,99 @@
+<include file="public@header" />
+</head>
+<body>
+	<div class="wrap js-check-wrap">
+		<ul class="nav nav-tabs">
+			<li class="active"><a href="#A" data-toggle="tab">菜单设置</a></li>
+
+			<li><a href="#B" data-toggle="tab">其他设置</a></li>
+
+		</ul>
+		<form class="form-horizontal js-ajax-for margin-top-20" role="form" action="{:url('setting/doWxSet')}" method="post">
+			<fieldset>
+				<div class="tabbable">
+					<div class="tab-content">
+						<div class="tab-pane active" id="A">
+							<div class="form-group">
+								<label class="col-sm-1 control-label">菜单1：</label>
+								<div class="col-sm-9">
+									名称：<input type="text" name="menu1[name]" value="">
+									类型：
+									<select name="menu1[type]">
+										<option value="view">链接</option>
+										<option value="click">点击</option>
+										<!--<option value="view_limited">图文</option>-->
+									</select>
+									内容：<input style="width:300px;" type="text" name="menu1[content]" value="">
+								</div>
+								<span onclick="addChildMenu(this)" data-menu="1" class="col-sm-2 btn-primary" style="width:100px; cursor: pointer;">添加子菜单</span>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-1 control-label">菜单2：</label>
+								<div class="col-sm-9">
+									名称：<input type="text" name="menu2[name]" value="">
+									类型：
+									<select name="menu2[type]">
+										<option value="view">链接</option>
+										<option value="click">点击</option>
+										<!--<option value="view_limited">图文</option>-->
+									</select>
+									内容：<input style="width:300px;" type="text" name="menu2[content]" value="">
+								</div>
+								<span onclick="addChildMenu(this)" data-menu="2" class="col-sm-2 btn-primary" style="width:100px; cursor: pointer;">添加子菜单</span>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-1 control-label">菜单3：</label>
+								<div class="col-sm-9">
+									名称：<input type="text" name="menu3[name]" value="">
+									类型：
+									<select name="menu3[type]">
+										<option value="view">链接</option>
+										<option value="click">点击</option>
+										<!--<option value="view_limited">图文</option>-->
+									</select>
+									内容：<input style="width:300px;" type="text" name="menu3[content]" value="">
+								</div>
+								<span onclick="addChildMenu(this)" data-menu="3" class="col-sm-2 btn-primary" style="width:100px; cursor: pointer;">添加子菜单</span>
+							</div>
+
+							<div class="form-group">
+								<div class="col-sm-offset-2 col-sm-10">
+									<button type="submit" class="btn btn-primary js-ajax-submit" data-refresh="1">{:lang('SAVE')}</button>
+								</div>
+							</div>
+						</div>
+
+						<div class="tab-pane" id="B">
+							<div class="form-group">
+								<div class="col-sm-offset-2 col-sm-10">
+									<button type="submit" class="btn btn-primary js-ajax-submit" data-refresh="0">{:lang('SAVE')}</button>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</fieldset>
+		</form>
+
+	</div>
+	<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+<script>
+	function addChildMenu(obj) {
+		var num = $(obj).data('menu');
+		var html ="<br><br>"+
+			"<div class=\"col-sm-9 text-right\">\n" +
+            "\t\t\t\t\t\t\t\t\t名称：<input type=\"text\" name=\"menu"+num+"[childName][]\" value=\"\">\n" +
+            "\t\t\t\t\t\t\t\t\t类型：\n" +
+            "\t\t\t\t\t\t\t\t\t<select name=\"menu"+num+"[childType][]\">\n" +
+            "\t\t\t\t\t\t\t\t\t\t<option value=\"view\">链接</option>\n" +
+            "\t\t\t\t\t\t\t\t\t\t<option value=\"click\">点击</option>\n" +
+//            "\t\t\t\t\t\t\t\t\t\t<option value=\"view_limited\">图文</option>\n" +
+            "\t\t\t\t\t\t\t\t\t</select>\n" +
+            "\t\t\t\t\t\t\t\t\t内容：<input style=\"width:300px;\" type=\"text\" name=\"menu"+num+"[childContent][]\" value=\"\">\n" +
+            "\t\t\t\t\t\t\t\t</div>";
+		$(obj).parent().append(html);
+    }
+</script>
+</body>
+</html>

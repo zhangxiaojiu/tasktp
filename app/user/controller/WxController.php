@@ -14,64 +14,100 @@ use think\Db;
 
 class WxController extends HomeBaseController
 {
-    public function index(){
-        //get参数
-//        $echoStr = $_GET['echostr'];
-//        $signature = $_GET['signature'];
-//        $timestamp = $_GET['timestamp'];
-//        $nonce = $_GET['nonce'];
-//        //配置参数
-//        $config = WxService::getConfig();
-//        $token = $config['token'];
-//        //获取签名
-//        $sign = WxService::getSign($token,$timestamp,$nonce);
-//        //签名正确 返回
-//        if($sign == $signature && $echoStr){
-//            echo $echoStr;
-//            cmf_set_option('test',['reback'=>'signtrue']);
-//            exit;
-//        }
-
+    public function index()
+    {
+        if (!isset($_GET['echostr'])) {
+            self::responseMsg();
+        } else {
+            $echoStr = $_GET['echostr'];
+            $signature = $_GET['signature'];
+            $timestamp = $_GET['timestamp'];
+            $nonce = $_GET['nonce'];
+            //配置参数
+            $config = WxService::getConfig();
+            $token = $config['token'];
+            //获取签名
+            $sign = WxService::getSign($token, $timestamp, $nonce);
+            //签名正确 返回
+            if ($sign == $signature && $echoStr) {
+                echo $echoStr;
+                exit;
+            }
+        }
+    }
+    private static function responseMsg(){
         $postStr = $GLOBALS["HTTP_RAW_POST_DATA"];
         $postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
-        $event = (string)$postObj->Event;
-
-        //扫描带参数的二维码
-        if($event == "subscribe") {
-            $fromUsername = (string)$postObj->FromUserName;
-            $EventKey = trim((string)$postObj->EventKey);
-            $keyArray = explode("_", $EventKey);
-            if (count($keyArray) == 1) {//已关注者扫描
-                $pid = $EventKey;
-            } else {//未关注者关注后推送事件
-                $pid = $keyArray[1];
-            }
-            $info = Db::name('third_party_user')->where(['openid' => $fromUsername])->find();
-            if ($info) {
-                if (empty($info['user_id'])) {
+        $RX_TYPE = trim($postObj->MsgType);
+        if($RX_TYPE == "text"){
+            $funcFlag = 0;
+            $contentStr = "你发送的内容为：".$postObj->Content;
+            $resultStr = self::transmitText($postObj, $contentStr, $funcFlag);
+            echo $resultStr;
+        }
+        if($RX_TYPE == "event") {
+            $event = (string)$postObj->Event;
+            //扫描带参数的二维码
+            if ($event == "subscribe") {
+                $fromUsername = (string)$postObj->FromUserName;
+                $EventKey = trim((string)$postObj->EventKey);
+                $keyArray = explode("_", $EventKey);
+                if (count($keyArray) == 1) {//已关注者扫描
+                    $pid = $EventKey;
+                } else {//未关注者关注后推送事件
+                    $pid = $keyArray[1];
+                }
+                $info = Db::name('third_party_user')->where(['openid' => $fromUsername])->find();
+                if ($info) {
+                    if (empty($info['user_id'])) {
+                        $uData['pid'] = $pid;
+                        $uData['create_time'] = time();
+                        $uid = Db::name('user')->insertGetId($uData);
+                        $data['user_id'] = $uid;
+                        Db::name("third_party_user")->where(['openid' => $fromUsername])->update($data);
+                    }
+                } else {
                     $uData['pid'] = $pid;
                     $uData['create_time'] = time();
                     $uid = Db::name('user')->insertGetId($uData);
+                    $data['openid'] = $fromUsername;
                     $data['user_id'] = $uid;
-                    Db::name("third_party_user")->where(['openid' => $fromUsername])->update($data);
+                    Db::name("third_party_user")->insert($data);
                 }
-            } else {
-                $uData['pid'] = $pid;
-                $uData['create_time'] = time();
-                $uid = Db::name('user')->insertGetId($uData);
-                $data['openid'] = $fromUsername;
-                $data['user_id'] = $uid;
-                Db::name("third_party_user")->insert($data);
+                $wxInfo = Db::name('third_party_user')->where(['user_id' => $pid])->find();
+                $title = "您好，您的下级绑定成功";
+                $url = '';
+                $remark = "您的下级绑定成功，下级完成任务您将获得奖励";
+                $ret = WxService::sendWxtmp($wxInfo['openid'], $title, $url, '待完善', $remark, 'bind');
+                $title = "绑定成功";
+                $url = 'http://www.qianduoya.com/user/profile/center';
+                $remark = "绑定成功，欢迎加入钱多呀,点击完善资料";
+                $ret = WxService::sendWxtmp($fromUsername, $title, $url, '待完善', $remark, 'bind');
             }
-            $wxInfo = Db::name('third_party_user')->where(['user_id'=>$pid])->find();
-            $title = "您好，您的下级绑定成功";
-            $url = '';
-            $remark = "您的下级绑定成功，下级完成任务您将获得奖励";
-            $ret = WxService::sendWxtmp($wxInfo['openid'],$title,$url,'待完善',$remark,'bind');
-            $title = "绑定成功";
-            $url = 'http://www.qianduoya.com/user/profile/center';
-            $remark = "绑定成功，欢迎加入钱多呀,点击完善资料";
-            $ret = WxService::sendWxtmp($fromUsername,$title,$url,'待完善',$remark,'bind');
+            //click事件
+            if ($event == "CLICK") {
+                switch ($postObj->EventKey)
+                {
+                    case "company":
+                        $contentStr[] = array("Title" =>"公司简介",
+                            "Description" =>"方倍工作室提供移动互联网相关的产品及服务",
+                            "PicUrl" =>"http://discuz.comli.com/weixin/weather/icon/cartoon.jpg",
+                            "Url" =>"weixin://addfriend/pondbaystudio");
+                        break;
+                    default:
+                        $contentStr[] = array("Title" =>"默认菜单回复",
+                            "Description" =>"您正在使用的是方倍工作室的自定义菜单测试接口",
+                            "PicUrl" =>"http://discuz.comli.com/weixin/weather/icon/cartoon.jpg",
+                            "Url" =>"weixin://addfriend/pondbaystudio");
+                        break;
+                }
+                if (is_array($contentStr)){
+                    $resultStr = self::transmitNews($postObj, $contentStr);
+                }else{
+                    $resultStr = self::transmitText($postObj, $contentStr);
+                }
+                echo $resultStr;
+            }
         }
     }
 
@@ -136,5 +172,51 @@ class WxController extends HomeBaseController
             $url = WxService::getAuthUrl($redirect_uri,$pid);
             $this->redirect($url);
         }
+    }
+
+    private static function transmitText($object, $content, $funcFlag = 0)
+    {
+        $textTpl = "<xml>
+<ToUserName><![CDATA[%s]]></ToUserName>
+<FromUserName><![CDATA[%s]]></FromUserName>
+<CreateTime>%s</CreateTime>
+<MsgType><![CDATA[text]]></MsgType>
+<Content><![CDATA[%s]]></Content>
+<FuncFlag>%d</FuncFlag>
+</xml>";
+        $resultStr = sprintf($textTpl, $object->FromUserName, $object->ToUserName, time(), $content, $funcFlag);
+        return $resultStr;
+    }
+    private static function transmitNews($object, $arr_item, $funcFlag = 0)
+    {
+        //首条标题28字，其他标题39字
+        if(!is_array($arr_item))
+            return;
+
+        $itemTpl = "    <item>
+        <Title><![CDATA[%s]]></Title>
+        <Description><![CDATA[%s]]></Description>
+        <PicUrl><![CDATA[%s]]></PicUrl>
+        <Url><![CDATA[%s]]></Url>
+    </item>
+";
+        $item_str = "";
+        foreach ($arr_item as $item)
+            $item_str .= sprintf($itemTpl, $item['Title'], $item['Description'], $item['PicUrl'], $item['Url']);
+
+        $newsTpl = "<xml>
+<ToUserName><![CDATA[%s]]></ToUserName>
+<FromUserName><![CDATA[%s]]></FromUserName>
+<CreateTime>%s</CreateTime>
+<MsgType><![CDATA[news]]></MsgType>
+<Content><![CDATA[]]></Content>
+<ArticleCount>%s</ArticleCount>
+<Articles>
+$item_str</Articles>
+<FuncFlag>%s</FuncFlag>
+</xml>";
+
+        $resultStr = sprintf($newsTpl, $object->FromUserName, $object->ToUserName, time(), count($arr_item), $funcFlag);
+        return $resultStr;
     }
 }

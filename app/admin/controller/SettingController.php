@@ -255,6 +255,71 @@ class SettingController extends AdminBaseController
         return $this->fetch();
     }
 
+    public function wxSet(){
+        return $this->fetch();
+    }
+    public function doWxSet()
+    {
+        if ($this->request->isPost()) {
+            $data = $this->request->param();
+            foreach ($data as $v){
+                if(!empty($v['name']) && !empty($v['type'])){
+                    $menu = [
+                        'type' => $v['type'],
+                        'name' => $v['name']
+                    ];
+                    switch ($v['type']){
+                        case "view":
+                            $menu['url'] = $v['content'];
+                            break;
+                        case "click":
+                            $menu['key'] = $v['content'];
+                            break;
+                        case "view_limited":
+                            $menu['media_id'] = $v['content'];
+                            break;
+                        default:
+                            $this->error('类型存在错误');
+                    }
+                    if(!empty($v['childName'])){
+                        $num = count($v['childName']);
+                        for ($i =0; $i<$num; $i++){
+                            if(!empty($v['childName'][$i]) && !empty($v['childType'][$i]) && !empty($v['childContent'][$i])){
+                                $subButton = [
+                                    'type' => $v['childType'][$i],
+                                    'name' => $v['childName'][$i]
+                                ];
+                                switch ($v['childType'][$i]){
+                                    case "view":
+                                        $subButton['url'] = $v['childContent'][$i];
+                                        break;
+                                    case "click":
+                                        $subButton['key'] = $v['childContent'][$i];
+                                        break;
+                                    case "view_limited":
+                                        $subButton['media_id'] = $v['childContent'][$i];
+                                        break;
+                                    default:
+                                        $this->error('类型存在错误');
+                                }
+                                unset($menu['type']);
+                                unset($menu['key']);
+                                unset($menu['url']);
+                                unset($menu['media_id']);
+                                $menu['sub_button'][]=$subButton;
+                            }
+                        }
+                    }
+                    $button[] = $menu;
+                }
+            }
+            $param['button'] = $button;
+            $ret = WxService::createMenu($param);
+            p($ret);
+            //$this->success("保存成功！", '');
+
+        }
+    }
     /*
      * 创建微信菜单
      */
