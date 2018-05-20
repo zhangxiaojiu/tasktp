@@ -13,48 +13,34 @@
 				<div class="tabbable">
 					<div class="tab-content">
 						<div class="tab-pane active" id="A">
-							<div class="form-group">
-								<label class="col-sm-1 control-label">菜单1：</label>
-								<div class="col-sm-9">
-									名称：<input type="text" name="menu1[name]" value="">
-									类型：
-									<select name="menu1[type]">
-										<option value="view">链接</option>
-										<option value="click">点击</option>
-										<!--<option value="view_limited">图文</option>-->
-									</select>
-									内容：<input style="width:300px;" type="text" name="menu1[content]" value="">
+							<foreach name="menu" key="key" item="menu">
+								<php>
+									$sel_view = $sel_click = '';
+									if($menu['type'] == 'view'){
+										$sel_view = 'selected';
+										$content = $menu['url'];
+									}
+									if($menu['type'] == 'click'){
+										$sel_click = 'selected';
+										$click_event = cmf_get_option('click_event');
+										$content = $click_event[$menu['key']];
+									}
+								</php>
+								<div class="form-group">
+									<label class="col-sm-1 control-label">菜单{$key+1}：</label>
+									<div class="col-sm-9">
+										名称：<input type="text" name="menu{$key+1}[name]" value="{$menu.name}">
+										类型：
+										<select name="menu{$key+1}[type]">
+											<option value="view" {$sel_view}>链接</option>
+											<option value="click" {$sel_click}>文字</option>
+											<!--<option value="view_limited">图文</option>-->
+										</select>
+										内容：<input style="width:300px;" type="text" name="menu{$key+1}[content]" value="{$content}">
+									</div>
+									<span onclick="addChildMenu(this)" data-menu="{$key+1}" class="col-sm-2 btn-primary" style="width:100px; cursor: pointer;">添加子菜单</span>
 								</div>
-								<span onclick="addChildMenu(this)" data-menu="1" class="col-sm-2 btn-primary" style="width:100px; cursor: pointer;">添加子菜单</span>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-1 control-label">菜单2：</label>
-								<div class="col-sm-9">
-									名称：<input type="text" name="menu2[name]" value="">
-									类型：
-									<select name="menu2[type]">
-										<option value="view">链接</option>
-										<option value="click">点击</option>
-										<!--<option value="view_limited">图文</option>-->
-									</select>
-									内容：<input style="width:300px;" type="text" name="menu2[content]" value="">
-								</div>
-								<span onclick="addChildMenu(this)" data-menu="2" class="col-sm-2 btn-primary" style="width:100px; cursor: pointer;">添加子菜单</span>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-1 control-label">菜单3：</label>
-								<div class="col-sm-9">
-									名称：<input type="text" name="menu3[name]" value="">
-									类型：
-									<select name="menu3[type]">
-										<option value="view">链接</option>
-										<option value="click">点击</option>
-										<!--<option value="view_limited">图文</option>-->
-									</select>
-									内容：<input style="width:300px;" type="text" name="menu3[content]" value="">
-								</div>
-								<span onclick="addChildMenu(this)" data-menu="3" class="col-sm-2 btn-primary" style="width:100px; cursor: pointer;">添加子菜单</span>
-							</div>
+							</foreach>
 
 							<div class="form-group">
 								<div class="col-sm-offset-2 col-sm-10">
@@ -87,7 +73,7 @@
             "\t\t\t\t\t\t\t\t\t类型：\n" +
             "\t\t\t\t\t\t\t\t\t<select name=\"menu"+num+"[childType][]\">\n" +
             "\t\t\t\t\t\t\t\t\t\t<option value=\"view\">链接</option>\n" +
-            "\t\t\t\t\t\t\t\t\t\t<option value=\"click\">点击</option>\n" +
+            "\t\t\t\t\t\t\t\t\t\t<option value=\"click\">文字</option>\n" +
 //            "\t\t\t\t\t\t\t\t\t\t<option value=\"view_limited\">图文</option>\n" +
             "\t\t\t\t\t\t\t\t\t</select>\n" +
             "\t\t\t\t\t\t\t\t\t内容：<input style=\"width:300px;\" type=\"text\" name=\"menu"+num+"[childContent][]\" value=\"\">\n" +

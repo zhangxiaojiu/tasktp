@@ -218,6 +218,14 @@ class WxService
         $ret = request_post($url,$jsonParam);
         return $ret;
     }
+    //获取当前菜单
+    public static function getMenu(){
+        $accessToken = self::returnSetAccessToken();
+        $token = $accessToken['access_token'];
+        $url = "https://api.weixin.qq.com/cgi-bin/menu/get?access_token=".$token;
+        $ret = request_get($url);
+        return $ret;
+    }
 
     //回复信息
     public static function sendMsg($param){

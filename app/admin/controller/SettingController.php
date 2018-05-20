@@ -256,13 +256,15 @@ class SettingController extends AdminBaseController
     }
 
     public function wxSet(){
+        $menu = WxService::getMenu();
+        $this->assign('menu',$menu['menu']["button"]);
         return $this->fetch();
     }
     public function doWxSet()
     {
         if ($this->request->isPost()) {
             $data = $this->request->param();
-            foreach ($data as $v){
+            foreach ($data as $key=>$v){
                 if(!empty($v['name']) && !empty($v['type'])){
                     $menu = [
                         'type' => $v['type'],
@@ -273,7 +275,8 @@ class SettingController extends AdminBaseController
                             $menu['url'] = $v['content'];
                             break;
                         case "click":
-                            $menu['key'] = $v['content'];
+                            $clickEvent['button'.$key] = $v['content'];
+                            $menu['key'] = 'button'.$key;
                             break;
                         case "view_limited":
                             $menu['media_id'] = $v['content'];
@@ -294,7 +297,8 @@ class SettingController extends AdminBaseController
                                         $subButton['url'] = $v['childContent'][$i];
                                         break;
                                     case "click":
-                                        $subButton['key'] = $v['childContent'][$i];
+                                        $clickEvent['button'.$key.$i] = $v['childContent'][$i];
+                                        $subButton['key'] = 'button'.$key.$i;
                                         break;
                                     case "view_limited":
                                         $subButton['media_id'] = $v['childContent'][$i];
@@ -313,6 +317,7 @@ class SettingController extends AdminBaseController
                     $button[] = $menu;
                 }
             }
+            cmf_set_option('click_event',$clickEvent);
             $param['button'] = $button;
             $ret = WxService::createMenu($param);
             p($ret);

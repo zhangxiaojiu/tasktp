@@ -95,10 +95,13 @@ class WxController extends HomeBaseController
                             "Url" =>"weixin://addfriend/pondbaystudio");
                         break;
                     default:
-                        $contentStr[] = array("Title" =>"默认菜单回复",
-                            "Description" =>"您正在使用的是方倍工作室的自定义菜单测试接口",
-                            "PicUrl" =>"http://discuz.comli.com/weixin/weather/icon/cartoon.jpg",
-                            "Url" =>"weixin://addfriend/pondbaystudio");
+                        $contentStr = "无点击事件，默认回复";
+                        $clickEvent = cmf_get_option('click_event');
+                        foreach ($clickEvent as $key => $val){
+                            if($postObj->EventKey == $key){
+                                $contentStr = $val;
+                            }
+                        }
                         break;
                 }
                 if (is_array($contentStr)){

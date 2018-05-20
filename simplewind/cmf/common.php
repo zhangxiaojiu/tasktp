@@ -491,7 +491,7 @@ function cmf_get_option($key)
         }
     }
 
-    $optionValue = cache('cmf_options_' . $key);
+    //$optionValue = cache('cmf_options_' . $key);
 
     if (empty($optionValue)) {
         $optionValue = Db::name('option')->where('option_name', $key)->value('option_value');
