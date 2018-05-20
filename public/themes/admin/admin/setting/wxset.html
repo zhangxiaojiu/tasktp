@@ -25,7 +25,7 @@
 										if($menu['type'] == 'click'){
 											$sel_click = 'selected';
 											$click_event = cmf_get_option('click_event');
-											$content = $click_event[$menu['key']];
+											$content = isset($click_event[$menu['key']])?$click_event[$menu['key']]:'';
 										}
 									}
 								</php>
@@ -43,7 +43,7 @@
 									</div>
 									<span onclick="addChildMenu(this)" data-menu="{$key+1}" class="col-sm-2 btn-primary" style="width:100px; cursor: pointer;">添加子菜单</span>
 									<notempty name="menu.sub_button">
-										<foreach name="menu.sub_button" item="sub_menu">
+										<foreach name="menu.sub_button" key="sub_key" item="sub_menu">
 											<php>
 												$sub_sel_view = $sub_sel_click = '';
 												$sub_content = "";
@@ -55,20 +55,20 @@
 												if($sub_menu['type'] == 'click'){
 												$sub_sel_click = 'selected';
 												$click_event = cmf_get_option('click_event');
-												$sub_content = $click_event[$sub_menu['key']];
+												$sub_content = isset($click_event[$sub_menu['key']])?$click_event[$sub_menu['key']]:'';
 												}
 												}
 											</php>
 											<br><br>
 											<div class="col-sm-9 text-right">
-												名称：<input type="text" name="sub_menu{$key+1}[name]" value="{$sub_menu.name}">
+												名称：<input type="text" name="menu{$key+1}[childName][{$sub_key}]" value="{$sub_menu.name}">
 												类型：
-												<select name="menu{$key+1}[type]">
+												<select name="menu{$key+1}[childType][{$sub_key}]">
 													<option value="view" {$sub_sel_view}>链接</option>
 													<option value="click" {$sub_sel_click}>文字</option>
 													<!--<option value="view_limited">图文</option>-->
 												</select>
-												内容：<input style="width:300px;" type="text" name="menu{$key+1}[content]" value="{$sub_content}">
+												内容：<input style="width:300px;" type="text" name="menu{$key+1}[childContent][{$sub_key}]" value="{$sub_content}">
 											</div>
 										</foreach>
 									</notempty>
