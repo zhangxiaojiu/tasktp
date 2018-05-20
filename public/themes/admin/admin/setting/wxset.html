@@ -12,6 +12,9 @@
 			<fieldset>
 				<div class="tabbable">
 					<div class="tab-content">
+						<php>
+							$click_event = cmf_get_option('click_event');
+						</php>
 						<div class="tab-pane active" id="A">
 							<foreach name="menu" key="key" item="menu">
 								<php>
@@ -24,7 +27,6 @@
 										}
 										if($menu['type'] == 'click'){
 											$sel_click = 'selected';
-											$click_event = cmf_get_option('click_event');
 											$content = isset($click_event[$menu['key']])?$click_event[$menu['key']]:'';
 										}
 									}
@@ -54,7 +56,6 @@
 												}
 												if($sub_menu['type'] == 'click'){
 												$sub_sel_click = 'selected';
-												$click_event = cmf_get_option('click_event');
 												$sub_content = isset($click_event[$sub_menu['key']])?$click_event[$sub_menu['key']]:'';
 												}
 												}
@@ -83,6 +84,18 @@
 						</div>
 
 						<div class="tab-pane" id="B">
+							<div class="form-group">
+								<label for="input-msg_reply" class="col-sm-2 control-label">消息自动回复</label>
+								<div class="col-md-6 col-sm-10">
+									<input type="text" class="form-control" id="input-msg_reply" name="event[msg_reply]" value="{$click_event['msg_reply']|default=''}">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="input-follow_reply" class="col-sm-2 control-label">关注自动回复</label>
+								<div class="col-md-6 col-sm-10">
+									<input type="text" class="form-control" id="input-follow_reply" name="event[follow_reply]" value="{$click_event['follow_reply']|default=''}">
+								</div>
+							</div>
 							<div class="form-group">
 								<div class="col-sm-offset-2 col-sm-10">
 									<button type="submit" class="btn btn-primary js-ajax-submit" data-refresh="0">{:lang('SAVE')}</button>

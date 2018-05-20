@@ -39,9 +39,11 @@ class WxController extends HomeBaseController
         $postStr = $GLOBALS["HTTP_RAW_POST_DATA"];
         $postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
         $RX_TYPE = trim($postObj->MsgType);
+        $clickEvent = cmf_get_option('click_event');
         if($RX_TYPE == "text"){
             $funcFlag = 0;
-            $contentStr = "你发送的内容为：".$postObj->Content;
+            //$contentStr = "你发送的内容为：".$postObj->Content;
+            $contentStr = $clickEvent['msg_reply'];
             $resultStr = self::transmitText($postObj, $contentStr, $funcFlag);
             echo $resultStr;
         }
@@ -83,6 +85,9 @@ class WxController extends HomeBaseController
                 $url = 'http://www.qianduoya.com/user/profile/center';
                 $remark = "绑定成功，欢迎加入钱多呀,点击完善资料";
                 $ret = WxService::sendWxtmp($fromUsername, $title, $url, '待完善', $remark, 'bind');
+                $contentStr = $clickEvent['follow_reply'];
+                $resultStr = self::transmitText($postObj, $contentStr);
+                echo $resultStr;
             }
             //click事件
             if ($event == "CLICK") {
@@ -96,7 +101,6 @@ class WxController extends HomeBaseController
                         break;
                     default:
                         $contentStr = "无点击事件，默认回复";
-                        $clickEvent = cmf_get_option('click_event');
                         foreach ($clickEvent as $key => $val){
                             if($postObj->EventKey == $key){
                                 $contentStr = $val;

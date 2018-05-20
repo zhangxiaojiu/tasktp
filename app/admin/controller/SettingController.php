@@ -315,6 +315,9 @@ class SettingController extends AdminBaseController
                         }
                     }
                     $button[] = $menu;
+                }elseif ($key == "event"){
+                    $clickEvent['msg_reply'] = $v['msg_reply'];
+                    $clickEvent['follow_reply'] = $v['follow_reply'];
                 }
             }
             cmf_set_option('click_event',$clickEvent);
