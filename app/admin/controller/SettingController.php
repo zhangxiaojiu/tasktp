@@ -320,9 +320,11 @@ class SettingController extends AdminBaseController
             cmf_set_option('click_event',$clickEvent);
             $param['button'] = $button;
             $ret = WxService::createMenu($param);
-            p($ret);
-            //$this->success("保存成功！", '');
-
+            if($ret['errcode'] == 0){
+                $this->success("保存成功！", '');
+            }else{
+                $this->error($ret['errmsg']);
+            }
         }
     }
     /*
