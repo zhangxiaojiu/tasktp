@@ -8,7 +8,7 @@
 			<li><a href="#B" data-toggle="tab">其他设置</a></li>
 
 		</ul>
-		<form class="form-horizontal js-ajax-for margin-top-20" role="form" action="{:url('setting/doWxSet')}" method="post">
+		<form class="form-horizontal js-ajax-form margin-top-20" role="form" action="{:url('setting/doWxSet')}" method="post">
 			<fieldset>
 				<div class="tabbable">
 					<div class="tab-content">
@@ -16,14 +16,17 @@
 							<foreach name="menu" key="key" item="menu">
 								<php>
 									$sel_view = $sel_click = '';
-									if($menu['type'] == 'view'){
-										$sel_view = 'selected';
-										$content = $menu['url'];
-									}
-									if($menu['type'] == 'click'){
-										$sel_click = 'selected';
-										$click_event = cmf_get_option('click_event');
-										$content = $click_event[$menu['key']];
+									$content = "";
+									if(isset($menu['type'])){
+										if($menu['type'] == 'view'){
+											$sel_view = 'selected';
+											$content = $menu['url'];
+										}
+										if($menu['type'] == 'click'){
+											$sel_click = 'selected';
+											$click_event = cmf_get_option('click_event');
+											$content = $click_event[$menu['key']];
+										}
 									}
 								</php>
 								<div class="form-group">
@@ -39,6 +42,36 @@
 										内容：<input style="width:300px;" type="text" name="menu{$key+1}[content]" value="{$content}">
 									</div>
 									<span onclick="addChildMenu(this)" data-menu="{$key+1}" class="col-sm-2 btn-primary" style="width:100px; cursor: pointer;">添加子菜单</span>
+									<notempty name="menu.sub_button">
+										<foreach name="menu.sub_button" item="sub_menu">
+											<php>
+												$sub_sel_view = $sub_sel_click = '';
+												$sub_content = "";
+												if(isset($sub_menu['type'])){
+												if($sub_menu['type'] == 'view'){
+												$sub_sel_view = 'selected';
+												$sub_content = $sub_menu['url'];
+												}
+												if($sub_menu['type'] == 'click'){
+												$sub_sel_click = 'selected';
+												$click_event = cmf_get_option('click_event');
+												$sub_content = $click_event[$sub_menu['key']];
+												}
+												}
+											</php>
+											<br><br>
+											<div class="col-sm-9 text-right">
+												名称：<input type="text" name="sub_menu{$key+1}[name]" value="{$sub_menu.name}">
+												类型：
+												<select name="menu{$key+1}[type]">
+													<option value="view" {$sub_sel_view}>链接</option>
+													<option value="click" {$sub_sel_click}>文字</option>
+													<!--<option value="view_limited">图文</option>-->
+												</select>
+												内容：<input style="width:300px;" type="text" name="menu{$key+1}[content]" value="{$sub_content}">
+											</div>
+										</foreach>
+									</notempty>
 								</div>
 							</foreach>
 
