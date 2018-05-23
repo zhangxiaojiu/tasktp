@@ -76,6 +76,24 @@
 								</div>
 							</foreach>
 
+							<foreach name="emptyList" item="v">
+								<div class="form-group">
+								<label class="col-sm-1 control-label">菜单{$v}：</label>
+								<div class="col-sm-9">
+									名称：<input type="text" name="menu{$v}[name]" value="">
+									类型：
+									<select name="menu{$v}[type]">
+										<option value="view">链接</option>
+										<option value="click">文字</option>
+										<!--<option value="view_limited">图文</option>-->
+									</select>
+									内容：<input style="width:300px;" type="text" name="menu{v}[content]" value="">
+								</div>
+								</div>
+							</foreach>
+
+
+							</notempty>
 							<div class="form-group">
 								<div class="col-sm-offset-2 col-sm-10">
 									<button type="submit" class="btn btn-primary js-ajax-submit" data-refresh="1">{:lang('SAVE')}</button>

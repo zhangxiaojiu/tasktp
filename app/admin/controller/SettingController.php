@@ -257,6 +257,15 @@ class SettingController extends AdminBaseController
 
     public function wxSet(){
         $menu = WxService::getMenu();
+
+        $num = count($menu['menu']["button"]);
+        $emptyNum = 3-$num;
+        $emptyList = [];
+        if($emptyNum > 0){
+            for ($i = 4-$emptyNum; $i <= 3; $i++)
+            $emptyList[] = $i;
+        }
+        $this->assign('emptyList', $emptyList);
         $this->assign('menu',$menu['menu']["button"]);
         return $this->fetch();
     }
