@@ -152,7 +152,18 @@ class AdminIndexController extends AdminBaseController
      * 提现审核
      */
     public function withdraw(){
-        $list = Db::name('coin_log')->alias('cl')->join('tt_user u','cl.uid = u.id')->field('cl.*,u.user_nickname')->where(['type'=>'withdraw'])->order('status')->paginate(10);
+        $where   = ['type'=>'withdraw'];
+        $request = input('request.');
+
+        if (!empty($request['uid'])) {
+            $where['uid'] = intval($request['uid']);
+        }
+        $where['status'] = 0;
+        if (!empty($request['status'])) {
+            $where['status'] = intval($request['status']);
+        }
+  
+        $list = Db::name('coin_log')->alias('cl')->join('tt_user u','cl.uid = u.id')->field('cl.*,u.user_nickname')->where($where)->order('status')->paginate(10);
         $this->assign('list',$list);
         return $this->fetch();
     }

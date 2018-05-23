@@ -5,7 +5,18 @@
     <ul class="nav nav-tabs">
         <li class="active"><a>提现审核</a></li>
     </ul>
-
+    <form class="well form-inline margin-top-20" method="post" action="{:url('user/adminIndex/withdraw')}">
+        用户ID：
+        <input class="form-control" type="text" name="uid" style="width: 200px;" value="{:input('request.uid')}"
+               placeholder="请输入用户ID">
+        状态：
+        <select class="form-control" name="status" style="width: 200px;">
+            <option value="0">未审核</option>
+            <option value="1">已审核</option>
+        </select>
+        <input type="submit" class="btn btn-primary" value="搜索"/>
+        <a class="btn btn-danger" href="{:url('user/adminIndex/withdraw')}">清空</a>
+    </form>
     <form method="post" class="js-ajax-form">
         <table class="table table-hover table-bordered">
             <thead>
