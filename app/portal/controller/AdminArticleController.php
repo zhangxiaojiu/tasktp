@@ -94,6 +94,7 @@ class AdminArticleController extends AdminBaseController
         if(!empty($param)){
             session('join_post_search',$param);
         }
+        p(session('join_post_search'));
         $list = JoinPostService::JoinPostList($param);
 
         $this->assign('start_time', isset($param['start_time']) ? $param['start_time'] : '');
