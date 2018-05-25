@@ -85,8 +85,9 @@ class AdminArticleController extends AdminBaseController
      */
     public function join(){
         $param = $this->request->param();
-        $isSession = isset($_GET['is_session'])?$_GET['is_session']:false;
-        if($isSession) {
+        $isSession = isset($_GET['is_session'])?$_GET['is_session']:0;
+        p($isSession);
+        if($isSession == 1) {
             $param = session('join_post_search');
         }else{
             session('join_post_search',null);
