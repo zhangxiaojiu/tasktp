@@ -46,14 +46,15 @@ class PostService
                 '__PORTAL_CATEGORY_POST__ b', 'a.id = b.post_id'
             ]);
             $field = 'a.*,b.id AS post_category_id,b.list_order,b.category_id,u.user_login,u.user_nickname,u.user_email';
-        }
-        $neqCategory = empty($filter['neqCategory']) ? 0 : intval($filter['neqCategory']);
-        if (!empty($neqCategory)) {
-            $where['b.category_id'] = ['neq', $neqCategory];
-            array_push($join, [
-                '__PORTAL_CATEGORY_POST__ b', 'a.id = b.post_id'
-            ]);
-            $field = 'a.*,b.id AS post_category_id,b.list_order,b.category_id,u.user_login,u.user_nickname,u.user_email';
+        }else {
+            $neqCategory = empty($filter['neqCategory']) ? 0 : intval($filter['neqCategory']);
+            if (!empty($neqCategory)) {
+                $where['b.category_id'] = ['neq', $neqCategory];
+                array_push($join, [
+                    '__PORTAL_CATEGORY_POST__ b', 'a.id = b.post_id'
+                ]);
+                $field = 'a.*,b.id AS post_category_id,b.list_order,b.category_id,u.user_login,u.user_nickname,u.user_email';
+            }
         }
 
         $startTime = empty($filter['start_time']) ? 0 : strtotime($filter['start_time']);
