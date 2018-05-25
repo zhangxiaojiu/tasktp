@@ -86,7 +86,6 @@ class AdminArticleController extends AdminBaseController
     public function join(){
         $param = $this->request->param();
         $isSession = isset($_GET['is_session'])?$_GET['is_session']:0;
-        p($isSession);
         if($isSession == 1) {
             $param = session('join_post_search');
         }else{
@@ -95,7 +94,6 @@ class AdminArticleController extends AdminBaseController
         if(!empty($param)){
             session('join_post_search',$param);
         }
-        p(session('join_post_search'));
         $list = JoinPostService::JoinPostList($param);
 
         $this->assign('start_time', isset($param['start_time']) ? $param['start_time'] : '');
@@ -169,7 +167,7 @@ class AdminArticleController extends AdminBaseController
             $url = 'http://www.qianduoya.com/user/favorite/task';
             $remark = "恭喜，您提交的任务《".$jpInfo['post_title']."》已经审核通过，奖励已下发";
             $ret = WxService::sendWxtmp($wxInfo['openid'],$title,$url,'成功',$remark,'void');
-            $this->success('通过成功',url('join',array('is_session' => 1)));
+            $this->success('通过成功','/portal/admin_article/join?is_session=1');
         }
     }
     /*
