@@ -184,7 +184,7 @@ class AdminArticleController extends AdminBaseController
             $url = 'http://www.qianduoya.com/user/favorite/task';
             $remark = "您提交的任务《".$jpInfo['post_title']."》审核没有通过，请仔细查看说明后重新提交";
             $ret = WxService::sendWxtmp($wxInfo['openid'],$title,$url,'失败',$remark,'void');
-            $this->success('驳回成功',url('join',array('is_session' => 1)));
+            $this->success('驳回成功','/portal/admin_article/join?is_session=1');
         }
     }
 
