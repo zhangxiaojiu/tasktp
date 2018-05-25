@@ -85,12 +85,12 @@ class AdminArticleController extends AdminBaseController
      */
     public function join(){
         $param = $this->request->param();
-        if(!empty($param)){
-            session('join_post_search',$param);
-        }
         $isSession = isset($_GET['is_session'])?$_GET['is_session']:false;
         if($isSession) {
             $param = session('join_post_search');
+        }
+        if(!empty($param)){
+            session('join_post_search',$param);
         }
         $list = JoinPostService::JoinPostList($param);
 
@@ -165,7 +165,7 @@ class AdminArticleController extends AdminBaseController
             $url = 'http://www.qianduoya.com/user/favorite/task';
             $remark = "恭喜，您提交的任务《".$jpInfo['post_title']."》已经审核通过，奖励已下发";
             $ret = WxService::sendWxtmp($wxInfo['openid'],$title,$url,'成功',$remark,'void');
-            $this->success('通过成功',url('join',array('is_session' => true)));
+            $this->success('通过成功',url('join',array('is_session' => 1)));
         }
     }
     /*
@@ -180,7 +180,7 @@ class AdminArticleController extends AdminBaseController
             $url = 'http://www.qianduoya.com/user/favorite/task';
             $remark = "您提交的任务《".$jpInfo['post_title']."》审核没有通过，请仔细查看说明后重新提交";
             $ret = WxService::sendWxtmp($wxInfo['openid'],$title,$url,'失败',$remark,'void');
-            $this->success('驳回成功',url('join',array('is_session' => true)));
+            $this->success('驳回成功',url('join',array('is_session' => 1)));
         }
     }
 
