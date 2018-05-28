@@ -56,6 +56,7 @@
                 <th>提交时间</th>
                 <th>审核时间</th>
                 <th>状态</th>
+                <th>备注</th>
                 <th>操作</th>
             </tr>
             </thead>
@@ -83,12 +84,23 @@
                     <td>
                         {$arrStatus[$vo.join_status]}
                     </td>
+
+                    <td>
+                        <form></form>
+                        <form method="post" action="{:url('AdminArticle/joinMore')}" class="js-ajax-form">
+                            <textarea name="more" onblur="subMore()">{$vo.more}</textarea>
+                            <input name="id" type="hidden" value="{$vo.id}">
+                            <button id="buttonMore" class="hide js-ajax-submit" type="submit">备注</button>
+                        </form>
+                        <form></form>
+                    </td>
                     <td>
                         <eq name="vo.join_status" value="1">
                         <a href="{:url('AdminArticle/joinPass',array('id'=>$vo['id']))}" class="js-ajax-dialog-btn" data-msg="提交合格，奖励将到账">合格</a>
                         <a href="{:url('AdminArticle/joinProhibit',array('id'=>$vo['id']))}" class="js-ajax-dialog-btn" data-msg="提交不合格，将驳回重新提交">不合格</a>
                         </eq>
                     </td>
+                    </form>
                 </tr>
             </foreach>
             <tfoot>
@@ -115,6 +127,9 @@
 </div>
 <script src="__STATIC__/js/admin.js"></script>
 <script>
+    function subMore() {
+        $('#buttonMore').click();
+    }
     function showContent(con){
         $("#show-content").html(con);
         $("#show-bg").show();

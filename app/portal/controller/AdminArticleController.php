@@ -185,6 +185,15 @@ class AdminArticleController extends AdminBaseController
             $this->success('驳回成功','/portal/admin_article/join?is_session=1');
         }
     }
+    /*
+     * 任务备注
+     */
+    public function joinMore(){
+        $id = $this->request->param('id',0);
+        $more = $this->request->param('more','');
+        Db::name('portal_join_post')->where(['id'=>$id])->setField('more',$more);
+        $this->success('备注成功');
+    }
 
     /**
      * 添加文章
