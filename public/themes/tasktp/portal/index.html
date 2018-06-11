@@ -126,7 +126,7 @@
         <div class="row masonry">
             <php>
                 $widget["vars"]["last_news_category_id"] = empty($widget["vars"]["last_news_category_id"])?1:$widget["vars"]["last_news_category_id"];
-                $last_news_limit=10;
+                $last_news_limit=100;
             </php>
             <portal:articles limit="$last_news_limit" order="post.published_time DESC">
                 <div class="item">
