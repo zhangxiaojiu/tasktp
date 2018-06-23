@@ -9,7 +9,7 @@
 namespace app\user\controller;
 
 
-use app\admin\model\UserModel;
+use app\user\service\UserService;
 use cmf\controller\UserBaseController;
 use think\Db;
 
@@ -25,7 +25,7 @@ class FriendsController extends UserBaseController
      */
     public function index(){
         $uid = session('user.id');
-        $childIds = UserModel::getChildIds($uid);
+        $childIds = UserService::getChildIds($uid);
         $list = Db::name('user')->where(['id'=>['in',$childIds]])->paginate(5);
         $this->assign('list',$list);
         return $this->fetch();

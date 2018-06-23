@@ -11,7 +11,7 @@
 
 namespace app\user\controller;
 
-use app\admin\model\UserModel;
+use app\user\service\UserService;
 use app\user\service\WxService;
 use cmf\controller\AdminBaseController;
 use think\Db;
@@ -87,7 +87,7 @@ class AdminIndexController extends AdminBaseController
     public function childList(){
         $id = input('param.id', 0, 'intval');
         $level = input('param.level', false);
-        $childIds = UserModel::getChildIds($id,$level);
+        $childIds = UserService::getChildIds($id,$level);
         $list = Db::name('user')->where(['id'=>['in',$childIds]])->paginate(10);
         $page = $list->render();
         $this->assign('list', $list);

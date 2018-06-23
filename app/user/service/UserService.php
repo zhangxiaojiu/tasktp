@@ -1,22 +1,10 @@
 <?php
-// +----------------------------------------------------------------------
-// | ThinkCMF [ WE CAN DO IT MORE SIMPLE ]
-// +----------------------------------------------------------------------
-// | Copyright (c) 2013-2018 http://www.thinkcmf.com All rights reserved.
-// +----------------------------------------------------------------------
-// | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
-// +----------------------------------------------------------------------
-// | Author: 老猫 <thinkcmf@126.com>
-// +----------------------------------------------------------------------
-namespace app\admin\model;
+namespace app\user\service;
 
 use think\Db;
-use think\Model;
 
-class UserModel extends Model
+class UserService
 {
-
-
     public static function getChildIds($id, $level=false){
         $childIds = $seconds = $thirds = [];
         $childList = Db::name('user')->where(['pid'=>$id])->select();

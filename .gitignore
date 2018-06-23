@@ -1,3 +1,7 @@
+*~
+*.swp
+cscope*
+tags
 .buildpath
 .DS_Store
 .project

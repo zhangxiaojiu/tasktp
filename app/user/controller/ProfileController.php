@@ -11,6 +11,7 @@
 namespace app\user\controller;
 
 use app\user\service\WxService;
+use app\user\service\UserService;
 use cmf\lib\Storage;
 use think\Validate;
 use think\Image;
@@ -39,7 +40,7 @@ class ProfileController extends UserBaseController
         $userModel = new UserModel();
         $user      = $userModel->where('id', $userId)->find();
 
-        $childIds = \app\admin\model\UserModel::getChildIds($userId);
+        $childIds = UserService::getChildIds($userId);
         $friends = count($childIds);
         $this->assign('friends', $friends);
         $this->assign('user', $user);
