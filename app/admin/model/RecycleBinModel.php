@@ -18,7 +18,7 @@ class RecycleBinModel extends Model
 
     public function user()
     {
-        return $this->belongsTo('UserModel', 'user_id')->setEagerlyType(1);
+        return $this->belongsTo('app\user\model\UserModel', 'user_id')->setEagerlyType(1);
     }
 
 

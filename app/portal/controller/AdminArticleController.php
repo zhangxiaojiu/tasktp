@@ -193,7 +193,7 @@ class AdminArticleController extends AdminBaseController
         $id = $this->request->param('id',0);
         $more = $this->request->param('more','');
         Db::name('portal_join_post')->where(['id'=>$id])->setField('more',$more);
-        $this->success('备注成功','/portal/admin_article/join?is_session=1');
+	return true;
     }
 
     /**
