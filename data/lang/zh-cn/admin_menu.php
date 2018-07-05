@@ -91,6 +91,7 @@ return array (
   'ADMIN_SLIDEITEM_EDITPOST' => '幻灯片页面编辑提交',
   'ADMIN_SLIDEITEM_INDEX' => '幻灯片页面列表',
   'ADMIN_SLIDEITEM_LISTORDER' => '幻灯片页面排序',
+  'ADMIN_SLIDE_ITEM_AD' => '广告管理',
   'ADMIN_STORAGE_INDEX' => '文件存储',
   'ADMIN_STORAGE_SETTINGPOST' => '文件存储设置提交',
   'ADMIN_THEME_ACTIVE' => '启用模板',
