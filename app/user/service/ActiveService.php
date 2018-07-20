@@ -31,7 +31,7 @@ class ActiveService
 	    self::wxRotateTmp($wxInfo['openid'],$title,$v['num'],$num,$ret);
 	    
 	}
-	Db::name('user_rotate')->where(['create_time' => $time])->setField('status',$num);
+	Db::name('user_rotate')->where(['create_time' => $time,'status' => -1])->setField('status',$num);
 	return true;
     }
 
