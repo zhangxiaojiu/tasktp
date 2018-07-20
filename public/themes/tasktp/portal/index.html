@@ -126,7 +126,7 @@
             <div class="caption-wraper">
                 <div class="caption hide">{$vo.title|default=''}</div>
             </div>
-            <a href="{$vo.url|default=''}"><img src="{:cmf_get_image_url($vo.image)}" alt=""></a>
+            <a href="{$vo.url|default=''}"><img class='img-responsive' src="{:cmf_get_image_url($vo.image)}" alt=""></a>
         </li>
     </slides>
     <noslides id="$top_slide_id">
@@ -178,7 +178,7 @@
     <div style="clear:both;"></div>
 </div>
 <div class="ad">
-    <a href='{$ad.url}'><img class='img-responsive' src='{$ad.image}'></a>
+    <a href='{$ad.url}'><img class='img-responsive' src='/upload/{$ad.image}'></a>
 </div>
 <h4 class='text-center'><i class="fas fa-ribbon" style="color:gold;"></i> 邀请排行榜</h4>
 <div class='invite'>
