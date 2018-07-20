@@ -10,6 +10,7 @@ namespace app\user\controller;
 
 use app\user\service\WxService;
 use cmf\controller\HomeBaseController;
+use app\user\service\ScoreLogService;
 use think\Db;
 
 class WxController extends HomeBaseController
@@ -75,7 +76,16 @@ class WxController extends HomeBaseController
                     $data['openid'] = $fromUsername;
                     $data['user_id'] = $uid;
                     Db::name("third_party_user")->insert($data);
-                }
+		}
+		//score
+		$scoreData = [
+		    'user_id' => $pid,
+		    'score' => 2,
+		    'action' => 'invite',
+		    'detail' => '邀请好友奖励积分2'
+		];
+		ScoreLogService::addScoreLog($scoreData);
+
                 $wxInfo = Db::name('third_party_user')->where(['user_id' => $pid])->find();
                 $title = "您好，您的下级绑定成功";
                 $url = '';

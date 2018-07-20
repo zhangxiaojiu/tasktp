@@ -355,9 +355,9 @@ class ProfileController extends UserBaseController
 	if(UserService::putSignData($userId,$arr)){
 	    $scoreData = [
 		'user_id' => $userId,
-		'score' => 1,
+		'score' => 2,
 		'action' => 'sign',
-		'detail' => '签到奖励积分1'
+		'detail' => '签到奖励积分2'
 	    ];
 	    ScoreLogService::addScoreLog($scoreData);
 	}
