@@ -39,8 +39,7 @@
     <div class="row">
         <div class="">
             <div class="tc-box article-box">
-                <h2>{$article.post_title}</h2>
-                <div class="article-infobox">
+                <div class="article-infobox hide">
                     <span>{:date('Y-m-d H:i',$article.published_time)}</span>
                     <!--<span>{:date('Y-m-d H:i',$article.published_time)} by {$article.user.user_nickname}</span>-->
                     <span class="fr">
@@ -58,7 +57,6 @@
 						</a>
 					</span>
                 </div>
-                <hr>
 
                 <div id="article_content">
                     {$article.post_content}
