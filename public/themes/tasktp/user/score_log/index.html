@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{$user_info.user_nickname} - 我的积分</title>
+    <include file="public@head"/>
+</head>
+<body>
+<!-- top bar -->
+<div class="top-bar pr30 "><a href="{:url('profile/center')}"><span class="glyphicon glyphicon-menu-left fl"></span></a>我的积分</div>
+<div class="mt50"></div>
+<div class="user-coin" style='height:80px;'>
+    <h1 class="pt10">{$user_info.score}</h1>
+    当前剩余
+</div>
+
+<div class="carpet">
+    <h4>积分记录：</h4>
+    <div class="top-line">
+        <php>
+            $types = [
+                'task' => "任务",
+                'sign' => "签到",
+                'rotate' => "幸运转盘",
+                'rotates' => "转盘加倍"
+            ];
+        </php>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>数值</th>
+                <th>类型</th>
+                <th>详情</th>
+            </tr>
+            </thead>
+            <tbody>
+            <foreach name="list" item="vo">
+                <tr>
+                    <td>{$vo.score}</td>
+                    <td width="50">{$types[$vo.action]}</td>
+                    <td>
+			{$vo.detail}
+                    </td>
+                </tr>
+            </foreach>
+            </tbody>
+        </table>
+        <div class="pagination">{$list->render()}</div>
+    </div>
+</div>
+<include file="public@footer" />
+<include file="public@scripts" />
+</body>
+</html>

@@ -49,7 +49,7 @@ class WxService
                 'secret' => $appSecret
             ];
             $url = "https://api.weixin.qq.com/cgi-bin/token" . '?' . http_build_query($params);
-            $ret = request_get($url);
+	    $ret = request_get($url);
             $data['access_token'] = $ret['access_token'];
             $data['expires_in'] = time() + $ret['expires_in'];
             cmf_set_option('qdy_access_token', $data);
@@ -149,6 +149,7 @@ class WxService
         if ($unifiedOrder === false) {
             return 'parse xml error';
         }
+	p($unifiedOrder);
         if ($unifiedOrder->return_code != 'SUCCESS') {
             return $unifiedOrder->return_msg;
         }

@@ -1,5 +1,7 @@
 <?php
 return array (
+  'ADMIN_ACTIVE_DEFAULT' => '活动管理',
+  'ADMIN_ACTIVE_ROTATE' => '幸运转盘',
   'ADMIN_HOOK_INDEX' => '钩子管理',
   'ADMIN_HOOK_PLUGINLISTORDER' => '钩子插件排序',
   'ADMIN_HOOK_PLUGINS' => '钩子插件管理',
@@ -91,6 +93,7 @@ return array (
   'ADMIN_SLIDEITEM_EDITPOST' => '幻灯片页面编辑提交',
   'ADMIN_SLIDEITEM_INDEX' => '幻灯片页面列表',
   'ADMIN_SLIDEITEM_LISTORDER' => '幻灯片页面排序',
+  'ADMIN_SLIDE_ITEM_ACTIVE' => '活动管理',
   'ADMIN_SLIDE_ITEM_AD' => '广告管理',
   'ADMIN_STORAGE_INDEX' => '文件存储',
   'ADMIN_STORAGE_SETTINGPOST' => '文件存储设置提交',

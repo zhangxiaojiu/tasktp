@@ -12,7 +12,7 @@
 		<div class="row">
 			<div class="user-top">
 				<img class="head" src="<empty name='user.avatar'>__TMPL__/../public/img/logo.png<else/>{$user.avatar}</empty>">
-				<a href="{:url('coinLog/index')}"><span class="text">(ID:{$user.id}) 可用余额：{$user.balance}元</span></a>
+				<span class="text">(ID:{$user.id}) 余额：<a href="{:url('coinLog/index')}">¥{$user.balance}</a> | 积分：<a href="{:url('ScoreLog/index')}">{$user.score}</a></span>
 			</div>
 			<img class="user-line" src="__TMPL__/public/assets/images/tasktp/user_line.png">
 		</div>

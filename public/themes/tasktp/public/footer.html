@@ -1,34 +1,29 @@
-<br>
 <!-- Footer ================================================== -->
-<hr>
-<div id="footer">
-    <hook name="footer_start"/>
-    <div class="mb100"></div>
-    <nav class="navbar navbar-default navbar-fixed-bottom">
-        <div class="container b-c-pink">
-            <div class="">
-                <a class="col-xs-4 navbar-brand" href="/">
-                    <span class="glyphicon glyphicon-home" aria-hidden="true"></span>首页
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+<style>
+.foot-menu i{
+    font-size:25px;
+}
+.foot-menu a{
+    text-decoration:none;
+}
+</style>
+<div class="mb100"></div>
+<footer>
+    <nav class="foot-menu navbar-default navbar-fixed-bottom">
+        <div class="text-center">
+                <a class="col-xs-4" href="/">
+		    <i class="fas fa-home"></i><br>
+                    首页大厅
                 </a>
-                <a class="col-xs-4 navbar-brand user-center" href="{:url('user/profile/center')}">
-                    <empty name="user_info.avatar">
-                        <img style="" src="__TMPL__/../public/img/logo.png"
-                             class="img-responsive"
-                             alt="">
-                        <else/>
-                        <img src="{$user_info.avatar}"
-                             class="img-responsive"
-                             alt="">
-                    </empty>
-                    {$user_info.user_nickname}
+                <a class="col-xs-4" href="{:url('portal/active/index')}">
+		    <i class="fab fa-hotjar"></i><br>
+		    热门活动
                 </a>
-                <a class="col-xs-4 navbar-brand" href="{:url('portal/list/index')}">
-                    <span class="glyphicon glyphicon-th" aria-hidden="true"></span>列表
+                <a class="col-xs-4" href="{:url('user/profile/center')}">
+		    <i class="fas fa-user"></i><br>
+                    个人中心
                 </a>
-            </div>
         </div>
     </nav>
-</div>
-<!--<div id="backtotop">-->
-    <!--<i class="fa fa-arrow-circle-up"></i>-->
-<!--</div>-->
+</footer>

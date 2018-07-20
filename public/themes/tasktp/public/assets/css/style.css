@@ -37,13 +37,8 @@ body.body-white {
 .carpet .icon-inm{color: #00afec; border:1px solid; margin-right:10px; padding:5px;}
 .carpet .gray-text{color:gray; font-size:14px;}
 .carpet .one-from-two div{margin:10px auto;}
-/*底部导航*/
-.navbar-default .navbar-brand{color:#00afec; text-align:center;}
-.navbar-default .container{width:100%;}
-.navbar-default .container .user-center{position:relative;bottom:70px;}
-.navbar-default .container .user-center img{margin:0 auto; width:70px; border-radius:35px;}
 /*首页*/
-.sy-box{position:relative;}
+.sy-box{position:relative;height:200px;}
 .sy-pager{
     position: absolute;
     bottom: 5px;
@@ -70,7 +65,7 @@ body.body-white {
 }
 .user-line{width:100%;}
 .user-top img{height:80px; border-radius: 50%; margin-top:80px; margin-left:20px;}
-.user-top .text{border:2px solid #fff; border-radius:20px; padding:5px 20px; margin-top:80px; position:relative; top:42px; left:10px; color:#fff;}
+.user-top .text{border:2px solid #fff; border-radius:20px; padding:5px 10px; margin-top:80px; position:relative; top:42px; left:10px; color:#fff;}
 .user-menu{
     display:block;
     color: #555;
@@ -83,7 +78,7 @@ body.body-white {
 .left-icon{
     display:inline-block;
     text-align:center;
-    line-height:30px;
+    line-height:30px !important;
     width:30px;
     height:30px;
     margin-right:10px;
@@ -101,6 +96,7 @@ body.body-white {
 .navbar-fixed-top, .navbar-fixed-bottom, .navbar-static-top {
     margin-right: 0px;
     margin-left: 0px;
+    padding:5px;
 }
 
 .navbar .nav .user {

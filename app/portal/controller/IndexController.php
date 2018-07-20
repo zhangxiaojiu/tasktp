@@ -11,12 +11,30 @@
 namespace app\portal\controller;
 
 use app\portal\model\UserModel;
+use app\user\service\UserService;
 use cmf\controller\HomeBaseController;
+use think\Db;
 
 class IndexController extends HomeBaseController
 {
+    public function _initialize()
+    {
+        parent::_initialize();
+        $this->checkUserLogin();
+    }
     public function index()
     {
-        return $this->fetch(':index');
+	$site= cmf_get_option('site_info');
+	//notice
+	$notice = $site['site_notice'];
+	//ad
+	$ad = Db::name('slideItem')->where(['title'=>'首页广告'])->find();
+	//invite
+	$list = UserService::getInviteList();
+	$this->assign('list',$list);
+	$this->assign('notice',$notice);
+	$this->assign('ad',$ad);
+	return $this->fetch(':index');
     }
+
 }

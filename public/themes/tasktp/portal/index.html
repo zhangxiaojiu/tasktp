@@ -29,33 +29,93 @@
         .tc-gridbox {
             margin: 0;
         }
+	
+	/* notice */
+	.notice .frame{
+	    height: 20px;
+	    overflow: hidden;
+	    margin-left:10px;
+	}
+	.notice .text{
+	    position:relative;
+	    left:0px;
+	    width:700px;
+	}
 
-        /*瀑布流*/
-        .item{break-inside: avoid; box-sizing: border-box; padding: 5px;}
-        .masonry{column-count: 2; column-gap: 0;}
-        @media (max-width: 767px) {
-            .caption-wraper {
-                left: 0;
-                bottom: 0.4em;
-            }
+	/* menu */
+	.menu{text-align:center;}
+	.menu i{
+	    font-size:35px;
+	}
+	.menu a{
+	    color:gray;
+	    text-decoration:none;
+	}
 
-            .caption-wraper .caption {
-                left: 0;
-                padding: 0.2em 0.4em;
-                font-size: 0.92em;
-                -webkit-border-radius: 0;
-                -moz-border-radius: 0;
-                -ms-border-radius: 0;
-                -o-border-radius: 0;
-                border-radius: 0;
-            }
-        }
+	/* ad */
+	.ad {
+	    margin-top:20px;
+	    height:150px;
+	    overflow:hidden;
+	}
+
+	/* invite */
+	.invite{
+	    height:150px;
+	    overflow:scroll;
+	}
+	.invite .frame{
+	    width:1300px;
+	    height:140px;
+	    overflow:hidden;
+	}
+	.invite .frame .block{
+	    border-radius:5px;
+	    margin:5px;
+	    width:120px;
+	    float:left;
+	    text-align:center;
+	    background: -webkit-linear-gradient(#f3d2af,#fff, #f3d2af); /* Safari 5.1 - 6.0 */
+	    background: -o-linear-gradient(#f3d2af,#fff, #f3d2af); /* Opera 11.1 - 12.0 */
+	    background: -moz-linear-gradient(#f3d2af,#fff, #f3d2af); /* Firefox 3.6 - 15 */
+	    background: linear-gradient(#f3d2af,#fff, #f3d2af); /* 标准的语法 */
+	}
+	.invite .frame .block .s{
+	    font-size:20px;
+	    background:gold;
+	    border-radius:15px;
+	    width:30px;
+	    color:#fff;
+	}
+	.invite .frame .block img{
+	    width:50%;
+	    display:block;
+	    margin:0px auto;
+	    border-radius:30px;
+	}
+	.invite .frame .block .n{
+	    margin:3px auto;
+	}
+	.invite .frame .block .c{
+	    font-size:12px;
+	    margin:2px auto;
+	}
+
+	/* sign */
+	#signInB{position:fixed; top:0px; left:0px; width:100%; height:100%; opacity:0.8; background:#000; z-index:100000; display:none;}
+#signInTable{width:610px; height:510px; position:fixed; z-index:100001; top:0px; bottom:0px; left:-110px; margin:auto; display:none;  font-family:微软雅黑;}
+#signInClose{color:#fd4a29; font-size:36px; font-weight:bold; text-align:center; width:30px; height:30px; line-height:24px; vertical-align:middle; border:3px solid #fd4a29; border-radius:20px; cursor:pointer; float:right; margin-right:140px; transform:rotate(45deg); -webkit-transform:rotate(45deg); transition:transform 0.5s; -webkit-transition:-webkit-transform 0.5s;}
+#signInClose:hover{transform:rotate(225deg); -webkit-transform:rotate(225deg);}
+#signInTable table{width:280px; height:270px; margin-left:158px; margin-top:75px; border-collapse:separate; border-spacing:1px;}
+#signInTable table th{width:40px; height:30px; text-align:center; font-size:18px; font-weight:bold; color:#3f6de0;}
+#signInTable table td{width:40px; height:40px; text-align:center; background:#fff; border-radius:5px; font-size:12px; color:#c1c2c5;}
+#signInTable table td b{font-size:20px; position:relative; top:5px;}
+#signInButton{width:100px; height:30px; line-height:30px; text-align:center; background:#ffeb42; color:#c56500; font-size:16px; font-weight:bold; margin-left:190px; margin-top:20px; border-bottom:3px solid #ffca0b; border-radius:3px; cursor:pointer;}
 
     </style>
     <hook name="before_head_end"/>
 </head>
 <body>
-<include file="public@nav"/>
 
 <ul id="home-slider" class="list-unstyled">
     <php>
@@ -90,35 +150,79 @@
         </li>
     </noslides>
 </ul>
-
+<h5 class='notice'>
+    <div class='col-xs-1'>
+	<i class="fas fa-volume-up"></i>
+    </div>
+    <div class='col-xs-10 frame'>
+	<div class='text'>{$notice}</div>
+    </div>
+</h5>
 <div class="container">
-    <widget name="features">
-        <div>
-            <h1 class="text-center">{$widget.title}</h1>
-            <h3 class="text-center">{$widget.vars.sub_title}</h3>
-        </div>
-        <php>
-            $features_count = count($widget['vars']['features']);
-            $rows = ceil($features_count/3);
-        </php>
-        <for start="1" end="$rows" comparison="elt" step="1" name="row">
-            <php>
-                $first_row = ($row-1)*3;
-                $features = array_slice($widget['vars']['features'],$first_row,3);
-            </php>
-            <div class="row">
-                <foreach name="features" item="vo">
-                    <div class="col-md-4">
-                        <h2 class="font-large nospace"><i class="fa fa-{$vo.icon}"></i> {$vo.title}</h2>
-                        <p>{$vo.content}</p>
-                    </div>
-                </foreach>
-            </div>
-        </for>
-
-    </widget>
-
-    <widget name="last_news">
+    <div style="clear:both;"></div>
+    <hr style="margin-top:5px;">
+    <div class='menu'>
+	<a href='{:url('portal/list/index')}' class='col-xs-3'>
+	    <i class="fab fa-fort-awesome-alt" style='color:#8d76ff;'></i> <br>任务大厅
+	</a>
+	<a href='javascript:showSignIn();' class='col-xs-3'>
+	    <i class="fas fa-calendar-check" style='color:#edac23;'></i> <br>今日签到
+	</a>
+	<a href='{:cmf_url('user/profile/share')}' class='col-xs-3'>
+	    <i class="fas fa-user-plus" style='color:#3cd5f2;'></i> <br>邀请好友
+	</a>
+	<a href='{:cmf_url('user/profile/shareRule')}' class='col-xs-3'>
+	    <i class="fab fa-wpforms" style='color:#d33935;'></i> <br>邀请规则
+	</a>
+    </div>
+    <div style="clear:both;"></div>
+</div>
+<div class="ad">
+    <a href='{$ad.url}'><img class='img-responsive' src='{$ad.image}'></a>
+</div>
+<h4 class='text-center'><i class="fas fa-ribbon" style="color:gold;"></i> 邀请排行榜</h4>
+<div class='invite'>
+    <div class='frame'>
+    <foreach name='list' item='vo' key='k'>
+	<div class='block'>
+	    <div class='s'>{$k+1}</div>
+	    <img src='{$vo.avatar}'>
+	    <div class='n'>{$vo.user_nickname}</div>
+	    <div class='c'>已邀请{$vo.cnum}个好友</div>
+	</div>
+    </foreach>
+    </div>
+</div>
+<!-- 签到 -->
+<div id="signInB"  onclick="closeSignIn();"></div>
+<div id="signInTable" style="background:url(__TMPL__/public/assets/images/tasktp/tableB.png); ">
+	<div id="signInClose" onclick="closeSignIn();">+</div>
+	<table>
+		<tr>
+			<th>一</th><th>二</th><th>三</th><th>四</th><th>五</th><th>六</th><th>日</th>
+		</tr>
+		<tr>
+			<td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+		</tr>
+		<tr>
+			<td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+		</tr>
+		<tr>
+			<td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+		</tr>
+		<tr>
+			<td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+		</tr>
+		<tr>
+			<td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+		</tr>
+		<tr>
+			<td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+		</tr>
+	</table>
+	<div id="signInButton" onclick="signIn();">我要签到</div>
+</div>
+    <widget name="last_news_hide">
         <div>
             <h3 class="text-center">{$widget.title}</h3><hr>
         </div>
@@ -169,9 +273,7 @@
             </portal:articles>
         </div>
     </widget>
-    <include file="public@footer"/>
-</div>
-<!-- /container -->
+<include file="public@footer"/>
 <include file="public@scripts"/>
 <script src="__TMPL__/public/assets/js/slippry.min.js"></script>
 <script>
@@ -188,7 +290,68 @@
         $("#home-slider").show();
         //图片处理
         $(".resImg").height($(".resImg").width());
+	//notice
+	var n = 0;
+	setInterval(function(){
+	    n++;
+	    if(n>=500){
+		n =  0;
+	    }
+	    $('.text').css('left','-'+n+'px');
+	},50);
     });
+
+/* sign */
+function showSignIn(){
+    $("#signInB").fadeIn();
+    $("#signInTable").fadeIn();
+    $.post("{:url('user/profile/sign')}",function(data){
+	getInfo(eval(data));
+    });
+}
+function closeSignIn(){
+    $("#signInB").fadeOut();
+    $("#signInTable").fadeOut();
+}
+function signIn(){
+    $("#signInButton").css({"border-bottom":"none","margin-top":"23px"});
+    setTimeout(function(){
+	    $("#signInButton").css({"border-bottom":"3px solid #ffca0b","margin-top":"20px"});
+    },200);
+    $.post("{:url('user/profile/doSign')}",function(data){
+	    getInfo(eval(data));
+	    $("#signInButton").css({"border-bottom":"none","margin-top":"23px"});
+	    $("#signInButton").text("已签到");
+    });
+}
+function getInfo(arr) {
+    var d = new Date();
+    var y = d.getFullYear();
+    var m = d.getMonth();
+    var dd = d.getDate();
+    // what day of the week is first day of the month
+    d.setFullYear(y,m,1);
+    var w = d.getDay();
+    if (w == 0) w = 7;
+    // total day of month
+    if(m == 11){
+	    d.setFullYear(y+1,0,0);
+    }else{
+	    d.setFullYear(y,m+1, 0);
+    }
+    var ad = d.getDate();
+    //let's do sth
+    for(var i = 1; i <= ad; i++){
+	    $("#signInTable td:eq("+(w+i-2)+")").html("<span><b>"+i+"</b><br/>"+(m+1)+"月</span>");
+    }	
+    for(var j in arr){
+	    $("#signInTable td:eq("+(arr[j]+w-2)+")").css({"color":"#5685fd","background":"#fff url(__TMPL__/public/assets/images/tasktp/./yes.png) no-repeat right top"});
+	    if(arr[j] == dd){
+		    $("#signInButton").text("已签到");
+	    }
+    }
+}
+
 </script>
 <hook name="before_body_end"/>
 </body>

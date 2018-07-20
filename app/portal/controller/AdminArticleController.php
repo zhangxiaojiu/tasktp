@@ -11,6 +11,7 @@
 namespace app\portal\controller;
 
 use app\admin\service\CoinLogService;
+use app\user\service\ScoreLogService;
 use app\portal\service\JoinPostService;
 use app\user\service\WxService;
 use cmf\controller\AdminBaseController;
@@ -160,6 +161,13 @@ class AdminArticleController extends AdminBaseController
             }
             //奖励上级
             CoinLogService::taskUserParents($jpInfo['user_id'],$jpInfo['post_money']);
+            $slData = [
+                'user_id' => $jpInfo['user_id'],
+                'score' => $jpInfo['post_money'],
+                'action' => 'task',
+                'detail' => '完成任务《'.$jpInfo['post_title'].'》奖励积分'.$jpInfo['post_money']
+            ];
+            ScoreLogService::addScoreLog($slData);
 
             Db::commit();
             //发送微信模版

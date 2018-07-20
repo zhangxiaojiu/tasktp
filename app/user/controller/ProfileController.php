@@ -12,12 +12,14 @@ namespace app\user\controller;
 
 use app\user\service\WxService;
 use app\user\service\UserService;
+use app\user\service\ScoreLogService;
 use cmf\lib\Storage;
 use think\Validate;
 use think\Image;
 use cmf\controller\UserBaseController;
 use app\user\model\UserModel;
 use think\Db;
+use app\user\service;
 
 class ProfileController extends UserBaseController
 {
@@ -327,6 +329,42 @@ class ProfileController extends UserBaseController
         } else {
             $this->error("请求错误");
         }
+    }
+    /*
+     * sign
+     */
+    public function sign(){
+	$userId = session('user.id');
+	$signData = UserService::getSignData($userId);
+	$ret = json_decode($signData,true);
+	$year = intval(date('Y'));
+	$month = intval(date('m'));
+	$key = $year.'-'.$month;
+	if(isset($ret[$key])){
+	    die(json_encode($ret[$key]));
+	}else{
+	    die("");
+	}
+    }
+    public function doSign(){
+	$userId = session('user.id');
+	$year = intval(date('Y'));
+	$month = intval(date('m'));
+	$day = intval(date('d'));
+	$arr[$year.'-'.$month][] = $day;
+	if(UserService::putSignData($userId,$arr)){
+	    $scoreData = [
+		'user_id' => $userId,
+		'score' => 1,
+		'action' => 'sign',
+		'detail' => '签到奖励积分1'
+	    ];
+	    ScoreLogService::addScoreLog($scoreData);
+	}
+	$signData = UserService::getSignData($userId);
+	$ret = json_decode($signData,true);
+	$key = $year.'-'.$month;
+	die(json_encode($ret[$key]));
     }
 
 }

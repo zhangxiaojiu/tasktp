@@ -40,6 +40,25 @@ class SlideItemController extends AdminBaseController
         return $this->fetch();
     }
 
+    public function ad()
+    {
+	$name = '广告';
+	$Id = Db::name('slide')->where(['name'=>$name])->value('id');
+        $result  = Db::name('slideItem')->where(['slide_id' => $Id])->select()->toArray();
+        $this->assign('result', $result);
+        $this->assign('slide_id', $Id);
+        return $this->fetch('other');
+    }
+    public function active()
+    {
+	$name = '活动';
+	$Id = Db::name('slide')->where(['name'=>$name])->value('id');
+        $result  = Db::name('slideItem')->where(['slide_id' => $Id])->select()->toArray();
+        $this->assign('result', $result);
+        $this->assign('slide_id', $Id);
+        return $this->fetch('other');
+    }
+
     /**
      * 幻灯片页面添加
      * @adminMenu(
@@ -102,6 +121,15 @@ class SlideItemController extends AdminBaseController
         $this->assign('slide_id', $result['slide_id']);
         return $this->fetch();
     }
+    public function editOther()
+    {
+        $id     = $this->request->param('id');
+        $result = Db::name('slideItem')->where(['id' => $id])->find();
+	$name = Db::name('slide')->where(['id'=>$result['slide_id']])->value('name');
+        $this->assign('name', $name);
+        $this->assign('result', $result);
+        return $this->fetch();
+    }
 
     /**
      * 幻灯片页面编辑
@@ -125,6 +153,17 @@ class SlideItemController extends AdminBaseController
         Db::name('slideItem')->update($data['post']);
 
         $this->success("保存成功！", url("SlideItem/index", ['slide_id' => $data['post']['slide_id']]));
+
+    }
+    public function editPostOther()
+    {
+        $data = $this->request->param();
+
+        $data['post']['image'] = cmf_asset_relative_url($data['post']['image']);
+
+        Db::name('slideItem')->update($data['post']);
+
+        $this->success("保存成功！");
 
     }
 

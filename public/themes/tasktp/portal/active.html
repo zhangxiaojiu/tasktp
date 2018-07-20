@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>热门活动</title>
+    <include file="public@head"/>
+    <style>
+.piece{display:block; background:#fff; border-radius:10px; overflow:hidden; margin-bottom:10px; padding:5px;}
+a:hover{text-decoration:none;}
+    </style>
+    <hook name="before_head_end"/>
+</head>
+<body>
+<div class="container">
+    <foreach name='list' item='vo'>
+    <a href='{$vo.url}' class='piece row'>
+	<img class='img-responsive' src='/upload/{$vo.image}'>
+	<h3>{$vo.title}</h3>
+	<p>{$vo.description}</p>
+    </a>
+    </foreach>
+</div>
+<include file="public@footer"/>
+<include file="public@scripts"/>
+<hook name="before_body_end"/>
+</body>
+</html>

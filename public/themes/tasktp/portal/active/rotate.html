@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>幸运转盘</title>
+    <include file="public@head"/>
+    <!--[if IE]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    
+</head>
+<style>
+body{background:#f02390;}
+#RotateDiv{ width:300px;height: 300px; position:absolute; margin:auto; top:100px;left:0px; right:0px;}
+#RotateBtn{ width:70px;height: 70px; z-index:1; position:absolute; margin:auto; top:130px;left:0px; right:0px;}
+
+/* notice */
+#back_window{position:fixed; top:0px; left:0px; width:100%; height:100%; opacity:0.8; background:#000; z-index:10; display:none;}
+#show_window{width:90%; height:200px; position:fixed; z-index:11; top:0px; bottom:0px; left:0px; right:0px; margin:auto; background:#fef;border-radius:10px; padding:10px; display:none;}
+#close_window{color:#fd4a29; font-size:30px; font-weight:bold; text-align:center; width:30px; height:30px; line-height:30px; border-radius:20px; cursor:pointer; float:right;  transform:rotate(45deg); -webkit-transform:rotate(45deg); transition:transform 0.5s; -webkit-transition:-webkit-transform 0.5s;}
+#close_window:hover{transform:rotate(225deg); -webkit-transform:rotate(225deg);}
+.tit{text-align:center; color:#fff;}
+#show_num{font-weight:bold;color:red; font-size:2em;}
+.now_score{color:gold; font-weight:bold; font-size:1.5em;}
+.reward{color:#fff; padding:10px;text-align:center;font-size:2em;}
+.explain{padding:10px; color:#fff; clear:both;position:absolute;bottom:60px;};
+</style>
+ 
+<body>
+    <h3 class='tit'>当前剩余积分<span class='now_score'>{$user_info.score}</span></h3>
+    <empty name='ret'>
+    <div id="RotateBtn"><img class='img-responsive' src='__TMPL__/public/assets/images/tasktp/indicator.png'></div>
+    <div id="RotateDiv"><img class='img-responsive' src='__TMPL__/public/assets/images/tasktp/plate.png'></div>
+    <else/>
+    <h1 class='text-center'>今日已选幸运数字<br><br>
+
+	<span class='now_score'>{$ret.num}</span><br><br>
+
+	倍数<span class='now_score'>{$ret.multiple}</span>
+    </h1>
+    <br><br>
+    <eq name='ret.status' value='-1'>
+    <p class='reward'>
+	等待开奖，中奖可得¥{$ret.multiple*0.5}
+    </p>
+    <else/>
+    <p class='reward'>
+	已开奖，开奖号码{$ret.status}
+    </p>
+    </eq>
+    <eq name='ret.status' value='1'>
+    <p class='reward'>
+	请耐心等待开奖，中奖可以获得¥{$ret.multiple*0.5}
+    </p>
+    </eq>
+    </empty>
+    <p class='explain'>
+	说明：“幸运转盘”消耗2积分摇一次转盘。<br>
+	转盘上有0-9的数字, 转到某一个数字的时候即你今日的幸运数字。<br>
+	你可以继续选择加倍，或者放弃当前数字重新转,放弃不退还积分。<br>
+	提升成功后即表示参与成功，开奖后奖励会自动发送余额<br>
+	奖励规则：猜中情况，每2积分为0.5元。猜错无奖励
+    </p>
+
+    <div id="back_window"  onclick="closeWindow();"></div>
+    <form method='post' action="{:url('portal/active/subRotate')}" id="show_window">
+	<h3>你抽到的幸运数字为 <span id='show_num'>0<span></h3>
+	<h3>请选择竞猜倍数(1-5)<input name='multiple' id="multiple" style="width:50px;" type='number' value='1' min='1' max='5' step='1'></h3>
+	<input type='hidden' name='num' value=''>
+	<div class='btn btn-info pull-right' onclick='chooseNum()'>选择数字</div>
+	<a class='btn btn-warning pull-left' href='javascript:closeWindow()' onclick="return confirm('放弃将会消耗积分，并且不做选择')">放弃数字</a>
+    </form>
+
+<!--<p>默认转动：</p>
+<p> <button id="RotateBtn2">开始抽奖2</button> </p>
+<div id="RotateDiv2"></div>-->
+ 
+<include file="public@footer"/>
+<include file="public@scripts"/>
+</body>
+</html>
+<script type="text/javascript">
+function showWindow(){
+    $("#back_window").fadeIn();
+    $("#show_window").fadeIn();
+}
+function closeWindow(){
+    $("#back_window").fadeOut();
+    $("#show_window").fadeOut();
+}
+function chooseNum(){
+    var multiple = $('#multiple').val();
+    if(multiple < 1 || multiple > 5){
+	alert('请输入正确倍数');
+	return;
+    }
+    var nowScore = $('.now_score').text();
+    if((multiple-1)*2 > nowScore){
+	alert('积分不足');
+	return;
+    }else{
+	$('#show_window').submit();
+    }
+}
+
+    window.iRotate = (function(w,d){
+	function R(obj,json){
+	    this.obj = (typeof obj=='object') ? obj : d.querySelector(obj);
+	    this.startTime = Date.now();
+	    this.timer = null;
+	    this.rotate(json);
+	};
+	R.prototype = {
+	    rotate : function(json){
+		var t = this,times = json['time'] || 1000;
+		clearInterval(t.timer)
+		t.timer = setInterval(function(){
+		    var changeTime = Date.now(),
+			tm = times - Math.max(0,t.startTime - changeTime + times),
+			value = Tween[json['easing'] || 'easeOut'](tm,+json['start'] || 0,json['end'] - (+json['start'] || 0),times);
+		    t.obj.style['transform'] = t.obj.style['-webkit-transform'] = 'rotate('+value%360+'deg)';
+		    t.obj.setAttribute('data-rotate',value%360);
+		    if(tm==times){
+			clearInterval(t.timer);
+			json.callback && json.callback.call(t.obj)
+		    }
+		},10)
+	    },
+	    stop : function(fn){
+		clearInterval(this.timer);
+		fn && fn.call(this.obj)
+	    }
+	};
+	return R;
+    })(window,document);
+var Tween = {linear: function (t, b, c, d){return c*t/d + b;},easeOut: function(t, b, c, d){return -c *(t/=d)*(t-2) + b;}};
+
+(function(){
+    var off = true,off2 = true;
+    RotateBtn.onclick = function(){
+	if(!off) return //判断是否在旋转
+	off = false
+	var nowScore = parseFloat($('.now_score').text());
+	$.post("{:url('portal/active/ajaxRunRotate')}",function(data){
+	    if(data == 'no'){
+		alert('积分不足');
+	    }else if(data == 'timeout'){
+		alert('22:00之后不能再参与活动');
+	    }else{
+		$('.now_score').text(nowScore-2);
+		var num = Math.floor(Math.random()*10);
+		new iRotate('#RotateDiv',{
+		    end :(10-num)*36+7200,
+		    time :5000,
+		    callback : function(){ //回调函数
+			off = true
+			$('#show_num').text(num);
+			$('input[name=num]').val(num);
+			showWindow();
+		    }
+		});
+	    }
+	});
+    }
+    var r = null;
+    function rotate2(){ //递归持续旋转
+	r = new iRotate('#RotateDiv2',{
+	    start : 0,
+	    end :360,
+	    time :1000,
+	    easing : 'linear',
+	    callback : function(){
+		rotate2()
+	    }
+	});
+    }
+//    rotate2()
+//    RotateBtn2.onclick = function(){
+//	if(!off2) return //判断是否在旋转
+//	off2 = false
+//	r.stop(); //停止之前的旋转
+//	new iRotate('#RotateDiv2',{
+//	    start : RotateDiv2.getAttribute('data-rotate'),
+//	    end :65+1800,
+//	    time :5000,
+//	    callback : function(){ //回调函数
+//		this.innerHTML = this.getAttribute('data-rotate')
+//		off2 = true
+//	    }
+//	});
+//    }
+    
+})();
+</script>

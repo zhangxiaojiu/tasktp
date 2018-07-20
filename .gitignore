@@ -2,6 +2,7 @@
 *.swp
 cscope*
 tags
+wp.vim*
 .buildpath
 .DS_Store
 .project
