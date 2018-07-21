@@ -30,7 +30,7 @@ class IndexController extends HomeBaseController
 	//ad
 	$ad = Db::name('slideItem')->where(['title'=>'首页广告'])->find();
 	//invite
-	$list = UserService::getInviteList();
+	$list = UserService::getLieInviteList();
 	$this->assign('list',$list);
 	$this->assign('notice',$notice);
 	$this->assign('ad',$ad);

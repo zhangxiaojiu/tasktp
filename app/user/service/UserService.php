@@ -46,6 +46,21 @@ class UserService
 	array_multisort($cnum, SORT_DESC,$ret);
 	return $ret;
     }
+    public static function getLieInviteList(){
+	$where['id'] = ['in',[14,21,22,42,74]];
+	$users = Db::name('user')->field('id,user_nickname,avatar')->where($where)->select();
+	$site = cmf_get_option('site_info');
+	if($site['invite_num'] == ''){
+	    $site['invite_num'] = '5,4,3,2,1';
+	}
+	$num = explode(',',$site['invite_num']);
+	foreach($users as $k=>$v){
+	    $row = $v;
+	    $row['cnum'] = $num[$k];
+	    $list[] = $row;
+	}
+	return $list;
+    }
     public static function getSignData($id){
 	$data = Db::name('user_sign')->where(['user_id'=>$id])->value('data');
 	return $data;
