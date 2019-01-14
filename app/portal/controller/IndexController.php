@@ -20,7 +20,7 @@ class IndexController extends HomeBaseController
     public function _initialize()
     {
         parent::_initialize();
-        //$this->checkUserLogin();
+        $this->checkUserLogin();
     }
     public function index()
     {
