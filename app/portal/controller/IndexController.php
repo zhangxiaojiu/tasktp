@@ -20,7 +20,7 @@ class IndexController extends HomeBaseController
     public function _initialize()
     {
         parent::_initialize();
-        $this->checkUserLogin();
+        //$this->checkUserLogin();
     }
     public function index()
     {
@@ -29,11 +29,13 @@ class IndexController extends HomeBaseController
 	$notice = $site['site_notice'];
 	//ad
 	$ad = Db::name('slideItem')->where(['title'=>'首页广告'])->find();
+	$bad = Db::name('slideItem')->where(['title'=>'底部广告'])->select();
 	//invite
 	$list = UserService::getLieInviteList();
 	$this->assign('list',$list);
 	$this->assign('notice',$notice);
 	$this->assign('ad',$ad);
+	$this->assign('bad',$bad);
 	return $this->fetch(':index');
     }
 

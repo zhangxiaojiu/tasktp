@@ -191,6 +191,14 @@ class AdminIndexController extends AdminBaseController
             $this->error($ret[0]);
         }
     }
+    //删除提现记录
+    public function delWithdraw(){
+        $id = input('param.id', 0, 'intval');
+	if($id){
+	    Db::name('coin_log')->delete($id);
+	}
+	$this->redirect('admin_index/withdraw');
+    }
 
     /*
      * 设置比例

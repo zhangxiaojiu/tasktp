@@ -47,6 +47,8 @@
                             <else/>
                             <a style="color: #ccc;">已审核</a>
                         </neq>
+			|
+			<a href="{:url('adminIndex/delWithdraw',array('id'=>$vo['id']))}" class="js-ajax-dialog-bt" data-msg="确定删除么">删除</a>
                     </td>
                 </tr>
             </foreach>
