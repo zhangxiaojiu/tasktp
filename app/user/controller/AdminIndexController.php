@@ -158,7 +158,7 @@ class AdminIndexController extends AdminBaseController
         if (!empty($request['uid'])) {
             $where['uid'] = intval($request['uid']);
         }
-        $where['status'] = 0;
+        //$where['status'] = 0;
         if (!empty($request['status'])) {
             $where['status'] = intval($request['status']);
         }
