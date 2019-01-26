@@ -87,7 +87,6 @@ class PostService
             ->where($where)
             ->order('update_time', 'DESC')
             ->paginate(10);
-
         return $articles;
 
     }

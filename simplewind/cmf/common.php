@@ -1931,12 +1931,12 @@ function request_get($url = '')
 /*
 * 打印
 */
-function p($arr,$e=true){
+function pr($arr,$e=0){
     header("Content-type: text/html; charset=utf-8");
     echo "<pre>";
     print_r($arr);
     echo "</pre>";
-    if(!$e){
+    if($e){
         exit;
     }
 }

@@ -50,6 +50,7 @@ class ArticleController extends HomeBaseController
 
             if (count($categories) > 0) {
                 $this->assign('category', $categories[0]);
+		$category =  $categories[0];
             } else {
                 abort(404, '文章未指定分类!');
             }
@@ -64,7 +65,16 @@ class ArticleController extends HomeBaseController
             $this->assign('category', $category);
 
             $tplName = empty($category["one_tpl"]) ? $tplName : $category["one_tpl"];
-        }
+	}
+	
+	//judge the article's parent category
+	$pid = $category['parent_id'];
+	$pInfo = Db::name('portal_category')->find($pid);
+	if($pInfo['name'] == 'VIP大厅'){
+	    $isVip = 1;
+	}else{
+	    $isVip = 0;
+	}
 
         Db::name('portal_post')->where(['id' => $articleId])->setInc('post_hits');
 
@@ -74,7 +84,10 @@ class ArticleController extends HomeBaseController
         $uid = session('user.id')?session('user.id'):null;
         if(!empty($uid)){
             $joinPost = Db::name('portal_join_post')->where(['user_id'=>$uid,'post_id'=>$articleId])->find();
-        }
+	}
+	
+	//transmit data
+        $this->assign('is_vip',$isVip);
         $this->assign('is_article',$isArticle);
         $this->assign('join_post',$joinPost);
         $this->assign('article', $article);
@@ -111,7 +124,13 @@ class ArticleController extends HomeBaseController
         $data['user_id'] = $where['user_id'] = session('user.id');
         $data['post_id'] = $where['post_id'] = $articleId;
         $data['create_time'] = time();
-        if(Db::name('portal_join_post')->where($where)->find()){
+        if($info = Db::name('portal_join_post')->where($where)->find()){
+	    // tomorrow submit
+	    $nowDate = date('Ymd',time());
+	    $lastDate = date('Ymd',$info['update_time']);
+	    if($nowDate <= $lastDate){
+		$this->error('每天只能提交一次');
+	    }
             $joinContent = $this->request->param('join_content', null);
             $file   = $this->request->file('join_img');
             $joinImages = '';

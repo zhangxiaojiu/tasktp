@@ -32,7 +32,7 @@ a:hover{text-decoration:none;}
     </form>
     <div class='col-xs-3'>
 	<foreach name='category_list' item='vo'>
-	    <a href='{:url('portal/list/index',array('id'=>$vo.id))}'>
+	    <a href='{:url('portal/list/vip',array('id'=>$vo.id))}'>
                 <php>
 		$active=$category['id']==$vo['id']?" active":"";
 		$category_ids[] = $vo['id'];

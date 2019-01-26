@@ -93,6 +93,17 @@
                         <div>{$join_post.join_images|htmlspecialchars_decode}</div><br>
                         <button class="btn btn-lg btn-primary w100 js-ajax-submit" href="">提交审核</button>
                     </if>
+		    <if condition="($join_post.join_status == 2) and ($is_vip == 1)">
+		    <h3>再次提交</h3>
+		    <h4>提交内容：</h4>
+		    <textarea id="join_content" name="join_content"></textarea>
+		    <h4>提交图片<span id="add_img">+</span>　　<span id="remove_img">-</span></h4>
+		    <div class="join-img-div">
+			<input type="file" class="join_img" name="join_img[]">
+		    </div>
+		    <br/>
+		    <button class="btn btn-lg btn-primary w100 js-ajax-submit" href="">提交审核</button>
+		    </if>
                 </empty>
                 </form>
             </div>
