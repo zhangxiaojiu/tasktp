@@ -136,7 +136,7 @@ class WxController extends HomeBaseController
             $state = isset($_GET['state'])?$_GET['state']:0;//传递参数用
             $ret = WxService::getAccessToken($code);
             if (isset($ret['errcode'])) {
-                p($ret, 0);
+                pr($ret, 1);
             } else {
                 $data['access_token'] = $ret['access_token'];
                 $data['expire_time'] = time() + $ret['expires_in'];
