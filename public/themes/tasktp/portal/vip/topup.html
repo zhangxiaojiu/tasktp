@@ -17,6 +17,13 @@
 				alert(res.err_code+res.err_desc+res.err_msg);
 			    }else{
 				if(res.err_msg == 'get_brand_wcpay_request:ok'){
+				    $.post("{:url('ajaxVip')}",{},
+					function(data){
+					    alert(data);
+					    if(data > 0){
+						window.history.back(-1);
+					    }
+				    });
 				    alert('成功');
 				}
 				if(res.err_msg == 'get_brand_wcpay_request:cancel'){

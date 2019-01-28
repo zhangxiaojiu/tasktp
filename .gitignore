@@ -11,3 +11,4 @@ wp.vim*
 composer.lock
 /data/runtime
 /data/conf/database.php
+/logs
