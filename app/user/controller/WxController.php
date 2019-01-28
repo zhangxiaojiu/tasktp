@@ -135,8 +135,15 @@ class WxController extends HomeBaseController
         if($code) {
             $state = isset($_GET['state'])?$_GET['state']:0;//传递参数用
             $ret = WxService::getAccessToken($code);
-            if (isset($ret['errcode'])) {
-                pr($ret, 1);
+            if (isset($ret['errcode'])) { 
+		if($ret['errcode'] == '40163'){
+		     $redirect_uri = "http://www.qianduoya.com/user/wx/auth";
+		     $pid = isset($_GET['pid'])?$_GET['pid']:0;
+		     $url = WxService::getAuthUrl($redirect_uri,$pid);
+		     $this->redirect($url);
+		}else{
+		    pr($ret,1);
+		}
             } else {
                 $data['access_token'] = $ret['access_token'];
                 $data['expire_time'] = time() + $ret['expires_in'];
