@@ -147,6 +147,26 @@ class AdminIndexController extends AdminBaseController
             $this->error('数据传入失败！');
         }
     }
+    public function vip()
+    {
+        $id = input('param.id', 0, 'intval');
+        if ($id) {
+            Db::name("user")->where(["id" => $id])->setField('is_vip', 1);
+            $this->success("VIP开通成功！", '');
+        } else {
+            $this->error('数据传入失败！');
+        }
+    }
+    public function novip()
+    {
+        $id = input('param.id', 0, 'intval');
+        if ($id) {
+            Db::name("user")->where(["id" => $id])->setField('is_vip', 0);
+            $this->success("取消VIP成功！", '');
+        } else {
+            $this->error('数据传入失败！');
+        }
+    }
 
     /*
      * 提现审核

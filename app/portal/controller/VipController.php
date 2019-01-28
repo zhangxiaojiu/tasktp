@@ -32,6 +32,8 @@ class VipController extends HomeBaseController
 	require_once "WxPay.JsApiPay.php";
 	require_once "WxPay.Config.php";
 	require_once 'log.php';
+	$taskSettings  = cmf_get_option('task_settings');
+	$vipFee = $taskSetting['vip']*100;
 	//初始化日志
 	$logHandler= new \CLogFileHandler("../logs/".date('Y-m-d').'.log');
 	$log = \Log::Init($logHandler, 15);
@@ -45,10 +47,10 @@ class VipController extends HomeBaseController
 
 	    //②、统一下单
 	    $input = new \WxPayUnifiedOrder();
-	    $input->SetBody("test");
-	    $input->SetAttach("test");
+	    $input->SetBody("VIP");
+	    $input->SetAttach("VIP");
 	    $input->SetOut_trade_no("sdkphp".date("YmdHis"));
-	    $input->SetTotal_fee("1");
+	    $input->SetTotal_fee($vipFee);
 	    $input->SetTime_start(date("YmdHis"));
 	    $input->SetTime_expire(date("YmdHis", time() + 600));
 	    $input->SetGoods_tag("test");
@@ -65,6 +67,7 @@ class VipController extends HomeBaseController
 	    Log::ERROR(json_encode($e));
 	}
 	$this->assign('jsApiParameters',$jsApiParameters);
+	$this->assign('vip_fee',$vipFee);
 	$this->assign('editAddress',$editAddress);
 	return $this->fetch();
     }

@@ -74,6 +74,15 @@
                             <else/>
                             <a style="color: #ccc;">{:lang('BLOCK_USER')}</a>
                         </neq>
+			|
+			<eq name="vo.is_vip" value='0'>
+			<a href="{:url('adminIndex/vip',array('id'=>$vo['id']))}"
+			   class="js-ajax-dialog-btn"
+			   data-msg="确定要给该用户开通vip嘛">开VIP</a>
+			<else/>
+			<a href="{:url('adminIndex/novip',array('id'=>$vo['id']))}" class="js-ajax-dialog-btn"
+										  data-msg="确定要取消该用户的vip嘛">取消VIP<a>
+			</eq>
                     </td>
                 </tr>
             </foreach>
