@@ -17,13 +17,14 @@
 				alert(res.err_code+res.err_desc+res.err_msg);
 			    }else{
 				if(res.err_msg == 'get_brand_wcpay_request:ok'){
-				    $.post("portal/vip/ajaxvip",function(data){
-					alert(data);
-					window.location.href="portal/vip/index";
-				    });
+				    alert('成功');			    	
 				}
 				if(res.err_msg == 'get_brand_wcpay_request:cancel'){
 				    alert('用户取消');
+				    $.post("./portal/vip/ajaxvip",function(data){
+					alert(data);
+					window.location.href="portal/vip/index";
+				    });
 				}
 			    }
 			}
