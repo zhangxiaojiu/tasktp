@@ -78,6 +78,7 @@ return array (
   'ADMIN_SETTING_SITEPOST' => '网站信息设置提交',
   'ADMIN_SETTING_UPLOAD' => '上传设置',
   'ADMIN_SETTING_UPLOADPOST' => '上传设置提交',
+  'ADMIN_SETTING_WXSET' => '微信设置',
   'ADMIN_SLIDE_ADD' => '添加幻灯片',
   'ADMIN_SLIDE_ADDPOST' => '添加幻灯片提交',
   'ADMIN_SLIDE_DELETE' => '删除幻灯片',
