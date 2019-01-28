@@ -70,7 +70,7 @@ class VipController extends HomeBaseController
     }
     public function ajaxVip(){
 	$uid = cmf_get_current_user_id();
-	$ret = Db::name('user')->where(['id'=>$uid])->setField('is_vip',1);
+	//$ret = Db::name('user')->where(['id'=>$uid])->setField('is_vip',1);
 	pr($uid,1);
     }
 }
