@@ -37,7 +37,7 @@ class WxController extends HomeBaseController
         }
     }
     private static function responseMsg(){
-        $postStr = $GLOBALS["HTTP_RAW_POST_DATA"];
+        $postStr = file_get_contents("php://input");
         $postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
         $RX_TYPE = trim($postObj->MsgType);
         $clickEvent = cmf_get_option('click_event');
