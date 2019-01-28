@@ -12,8 +12,17 @@
 			'getBrandWCPayRequest',
 		    {$jsApiParameters},
 			function(res){
-				WeixinJSBridge.log(res.err_msg);
+			    WeixinJSBridge.log(res.err_msg);
+			    if(res.err_code){
 				alert(res.err_code+res.err_desc+res.err_msg);
+			    }else{
+				if(res.err_msg == 'get_brand_wcpay_request:ok'){
+				    alert('成功');
+				}
+				if(res.err_msg == 'get_brand_wcpay_request:cancel'){
+				    alert('用户取消');
+				}
+			    }
 			}
 		);
 	}
@@ -46,7 +55,7 @@
 				var value4 = res.addressDetailInfo;
 				var tel = res.telNumber;
 				
-				alert(value1 + value2 + value3 + value4 + ":" + tel);
+				//alert(value1 + value2 + value3 + value4 + ":" + tel);
 			}
 		);
 	}
