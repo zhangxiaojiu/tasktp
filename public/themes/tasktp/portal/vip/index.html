@@ -4,20 +4,14 @@
     <title>{$user_info.user_nickname} - VIP</title>
     <include file="public@head"/>
 </head>
-<body>
+<body style="width:100%; margin-bottom:17%; background:url('/static/images/vip1.png') no-repeat; background-size:100% auto; text-align:center;" >
 <!-- top bar -->
-<div class="top-bar pr30 "><a href="/"><span class="glyphicon glyphicon-menu-left fl"></span></a>我的VIP</div>
-<div class="mt50"></div>
-<div class="user-coin">
+<div style="margin-top:140%;">
     <eq name="user_info.is_vip" value='1'>
-    <h1 class="pt10">您已经是VIP</h1>
-    <a class='btn btn-success' style="margin-top:50px; width:60%; border-radius:5px;" href='{:url('list/vip')}'>点此去VIP大厅</a>
+    <a href='{:url('list/vip')}'><img style='height:60px;' src='/static/images/vip1-btn2.png'></a>
     <else/>
-    <h1 class="pt10">您还不是VIP</h1>
-    <a class='btn btn-warning' style="margin-top:50px; width:60%; border-radius:5px;" href='{:url('vip/topup')}'>点此成为VIP</a>
+    <a href='{:url('vip/topup')}'><img style='height:60px;' src='/static/images/vip1-btn.png'></a>
     </eq>
 </div>
-<include file="public@footer" />
-<include file="public@scripts" />
 </body>
 </html>
