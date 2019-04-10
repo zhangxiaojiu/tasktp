@@ -237,4 +237,27 @@ class WxService
         $ret = request_post($url,$jsonParam);
         return $ret;
     }
+
+    /*
+     * 获取永久素材列表
+     */
+    public static function getWxImg($param){
+	$accessToken = self::returnSetAccessToken();
+        $token = $accessToken['access_token'];
+	$url = "https://api.weixin.qq.com/cgi-bin/material/batchget_material?access_token=$token";
+        $jsonParam = json_encode($param,JSON_UNESCAPED_UNICODE);
+        $ret = request_post($url,$jsonParam);
+        return $ret;
+    }
+
+    //上传永久素材
+    public static function upWximg($param,$type){
+	$accessToken = self::returnSetAccessToken();
+        $token = $accessToken['access_token'];
+        $url = "https://api.weixin.qq.com/cgi-bin/material/add_material?access_token=".$token."&type=$type";
+        //$jsonParam = json_encode($param,JSON_UNESCAPED_UNICODE);
+        $ret = request_post($url,$param);
+        return $ret;
+
+    }
 }

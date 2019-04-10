@@ -13,6 +13,7 @@ namespace app\admin\controller;
 use app\admin\model\RouteModel;
 use app\user\service\WxService;
 use cmf\controller\AdminBaseController;
+use app\portal\service\ImageService;
 
 use think\Db;
 
@@ -273,7 +274,7 @@ class SettingController extends AdminBaseController
     public function doWxSet()
     {
         if ($this->request->isPost()) {
-            $data = $this->request->param();
+	    $data = $this->request->param();
             foreach ($data as $key=>$v){
                 if(!empty($v['name']) && !empty($v['type'])){
                     $menu = [
@@ -288,7 +289,7 @@ class SettingController extends AdminBaseController
                             $clickEvent['button'.$key] = $v['content'];
                             $menu['key'] = 'button'.$key;
                             break;
-                        case "view_limited":
+                        case "media_id":
                             $menu['media_id'] = $v['content'];
                             break;
                         default:
@@ -310,7 +311,7 @@ class SettingController extends AdminBaseController
                                         $clickEvent['button'.$key.$i] = $v['childContent'][$i];
                                         $subButton['key'] = 'button'.$key.$i;
                                         break;
-                                    case "view_limited":
+                                    case "media_id":
                                         $subButton['media_id'] = $v['childContent'][$i];
                                         break;
                                     default:
@@ -330,10 +331,10 @@ class SettingController extends AdminBaseController
                     $clickEvent['follow_reply'] = $v['follow_reply'];
                 }
             }
-            cmf_set_option('click_event',$clickEvent);
-            $param['button'] = $button;
+	    $param['button'] = $button;
             $ret = WxService::createMenu($param);
             if($ret['errcode'] == 0){
+		cmf_set_option('click_event',$clickEvent);
                 $this->success("保存成功！", '');
             }else{
                 $this->error($ret['errmsg']);
@@ -341,10 +342,90 @@ class SettingController extends AdminBaseController
         }
     }
     /*
-     * 创建微信菜单
+     * 创建微信菜单test
      */
     public function createWxMenu(){
         $ret = WxService::createMenu();
         p($ret);
+    }
+
+    /*
+     * 微信永久图片素材列表
+     */
+    public function wxImg(){
+	$file   = $this->request->file('upload_img');
+	if($file){
+	    $ret = self::uploadImg($file);
+	    if($ret['code'] == 1){
+		$filepath = $_SERVER['DOCUMENT_ROOT']."/upload/sys/".$ret['data']['file'];
+		$wxret = self::addWxImg($filepath);
+		if(!$wxret['media_id']){
+		    pr($wxret,1);    
+		}
+	    }else{
+		$this->error("上传失败");
+	    }
+	}
+	$page = input('get.page',0);
+	//允许显示的素材数量
+    	$view_num = 5;
+	$begin = $page * $view_num;
+	$data = [
+	    "type" => "image",
+	    "offset" => $begin,
+	    "count" => $view_num
+	];
+	$ret = WxService::getWxImg($data);
+	$this->assign('list',$ret);
+	return $this->fetch();
+    }
+    private static function addWxImg($filepath){
+	$type = "image";
+	if(class_exists('\CURLFile')){
+	    $data['media'] = new \CURLFile($filepath);
+	}else{
+	    $data['media'] = '@'.$filepath;
+	}
+	$ret = WxService::upWximg($data,$type);
+	return $ret;
+    }
+
+    /*
+     * 上传图片
+     */
+    private static function uploadImg($file){
+        $result = $file->validate([
+            'ext'  => 'jpg,png',
+            'size' => 1024 * 1024*10
+        ])->move('.' . DS . 'upload' . DS . 'sys' . DS);
+        if ($result) {
+            $saveName = str_replace('//', '/', str_replace('\\', '/', $result->getSaveName()));
+            //压缩图片
+            $scale = 0.2;
+            $fileInfo = $file->getInfo();
+            $size = $fileInfo['size'];
+            if($size < 200*1024){
+                $scale = 1;
+            }
+            $src = "./upload/sys/".$saveName;
+            $image = new ImageService($src);
+            $image->percent = $scale;
+            $image->openImage();
+            $image->thumpImage();
+            $image->saveImage($src,true);
+            return [
+                'code' => 1,
+                "msg"  => "上传成功",
+                "data" => ['file' => $saveName],
+                "url"  => ''
+            ];
+        } else {
+            return [
+                'code' => 0,
+                "msg"  => $file->getError(),
+                "data" => "",
+                "url"  => ''
+            ];
+        }
     }
 }

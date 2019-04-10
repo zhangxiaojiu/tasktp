@@ -1,0 +1,37 @@
+<include file="public@header" />
+</head>
+<body>
+    <div class="wrap js-check-wrap">
+	<ul class="nav nav-tabs">
+	    <li><a href="{:url('setting/wxSet')}" >菜单设置</a></li>
+
+	    <li class="active"><a href="{:url('setting/wxImg')}" >图片管理</a></li>
+
+	</ul>
+	<form class="well form-inline margin-top-20" action="" method="post" enctype="multipart/form-data">
+	    <input class="form-control" type="file" name="upload_img">
+	    <input class="btn btn-primary" type="submit" value="上传">
+	</form>
+
+	<table class="table table-hover table-bordered">
+            <thead>
+		<tr>
+		    <th>MEDIA_ID</th>
+		    <th>名字</th>
+		    <th>图片</th>
+		</tr>
+            </thead>
+            <tbody>
+		<foreach name='list.item' item='vo'>
+		<tr>
+		    <td>{$vo.media_id}</td>
+		    <td>{$vo.name}</td>
+		    <td><a target="__blank" href="{$vo.url}"><img style="height:100px;" src="{:substr($vo.name,-57,57)}"></a></td>
+		</tr>
+		</foreach>
+	    </tbody>
+        </table>
+
+    </div>
+</body>
+</html>

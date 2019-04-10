@@ -6,9 +6,11 @@
 			<li class="active"><a href="#A" data-toggle="tab">菜单设置</a></li>
 
 			<li><a href="#B" data-toggle="tab">其他设置</a></li>
+			<li><a href="{:url('setting/wxImg')}" >图片管理</a></li>
 
 		</ul>
-		<form class="form-horizontal js-ajax-form margin-top-20" role="form" action="{:url('setting/doWxSet')}" method="post">
+		<br>⚠️注意：图片类型内容需填写MEDIA_ID 可在图片管理复制media_id
+		<form class="form-horizontal js-ajax-for margin-top-20" role="form" action="{:url('setting/doWxSet')}" method="post">
 			<fieldset>
 				<div class="tabbable">
 					<div class="tab-content">
@@ -18,7 +20,7 @@
 						<div class="tab-pane active" id="A">
 							<foreach name="menu" key="key" item="menu">
 								<php>
-									$sel_view = $sel_click = '';
+									$sel_view = $sel_click = $sel_media= '';
 									$content = "";
 									if(isset($menu['type'])){
 										if($menu['type'] == 'view'){
@@ -29,6 +31,11 @@
 											$sel_click = 'selected';
 											$content = isset($click_event[$menu['key']])?$click_event[$menu['key']]:'';
 										}
+										if($menu['type'] == 'media_id'){
+											$sel_media = 'selected';
+											$content = $menu['media_id'];
+										}
+
 									}
 								</php>
 								<div class="form-group">
@@ -39,7 +46,7 @@
 										<select name="menu{$key+1}[type]">
 											<option value="view" {$sel_view}>链接</option>
 											<option value="click" {$sel_click}>文字</option>
-											<!--<option value="view_limited">图文</option>-->
+											<option value="media_id" {$sel_media}>图片</option>
 										</select>
 										内容：<input style="width:300px;" type="text" name="menu{$key+1}[content]" value="{$content}">
 									</div>
@@ -67,7 +74,7 @@
 												<select name="menu{$key+1}[childType][{$sub_key}]">
 													<option value="view" {$sub_sel_view}>链接</option>
 													<option value="click" {$sub_sel_click}>文字</option>
-													<!--<option value="view_limited">图文</option>-->
+													<option value="media_id" {$sel_media}>图片</option>
 												</select>
 												内容：<input style="width:300px;" type="text" name="menu{$key+1}[childContent][{$sub_key}]" value="{$sub_content}">
 											</div>
@@ -85,7 +92,7 @@
 									<select name="menu{$v}[type]">
 										<option value="view">链接</option>
 										<option value="click">文字</option>
-										<!--<option value="view_limited">图文</option>-->
+										<option value="media_id">图片</option>
 									</select>
 									内容：<input style="width:300px;" type="text" name="menu{$v}[content]" value="">
 								</div>
@@ -138,7 +145,7 @@
             "\t\t\t\t\t\t\t\t\t<select name=\"menu"+num+"[childType][]\">\n" +
             "\t\t\t\t\t\t\t\t\t\t<option value=\"view\">链接</option>\n" +
             "\t\t\t\t\t\t\t\t\t\t<option value=\"click\">文字</option>\n" +
-//            "\t\t\t\t\t\t\t\t\t\t<option value=\"view_limited\">图文</option>\n" +
+            "\t\t\t\t\t\t\t\t\t\t<option value=\"media_id\">图片</option>\n" +
             "\t\t\t\t\t\t\t\t\t</select>\n" +
             "\t\t\t\t\t\t\t\t\t内容：<input style=\"width:300px;\" type=\"text\" name=\"menu"+num+"[childContent][]\" value=\"\">\n" +
             "\t\t\t\t\t\t\t\t</div>";
